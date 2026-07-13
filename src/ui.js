@@ -74,7 +74,7 @@
 
     if (_record) {
       const overrides = state.simulatedOverrides || {};
-      _computed = AU_ENGINE.calculate(_record, overrides, _dec());
+      _computed = AU_ENGINE.calculate(_record, overrides, _settings.manualExclusions || [], _dec());
       AU_OVERLAY.updateFAB(_computed.cgpa);
     } else {
       _computed = null;
@@ -84,6 +84,10 @@
 
   function _onSettingsChanged(s) {
     _settings = s;
+    if (_record) {
+      _computed = AU_ENGINE.calculate(_record, AU_STORAGE.getOverrides(), _settings.manualExclusions || [], _dec());
+      AU_OVERLAY.updateFAB(_computed.cgpa);
+    }
     _render();
   }
 
@@ -487,7 +491,7 @@
 
     let stepsHtml = '';
     if (roadmap.steps.length === 0) {
-      stepsHtml = '<p class="au-muted">Configure your remaining semesters in Settings to see the roadmap.</p>';
+      stepsHtml = '<p class="au-muted">Please configure your remaining semesters in Settings to view your academic roadmap.</p>';
     } else {
       stepsHtml = '<div class="au-roadmap__steps">' +
         roadmap.steps.map(step => {
@@ -512,7 +516,7 @@
 
   function _renderHighestImpactActions(advisor, target, dec, r) {
     if (!advisor.length) {
-      return _section('Highest Impact Actions',
+      return _section('Strategic Opportunities',
         '<p class="au-muted">No improvable courses found.</p>'
       );
     }
@@ -537,8 +541,8 @@
     }).join('');
 
     return _section(
-      'Highest Impact Actions',
-      '<p class="au-muted" style="margin-bottom:8px">Retaking these courses will give you the biggest GPA boost.</p>' +
+      'Strategic Opportunities',
+      '<p class="au-muted" style="margin-bottom:8px">Retaking these courses yields the highest potential increase to your CGPA.</p>' +
       rows
     );
   }
@@ -753,6 +757,34 @@
   // =========================================================================
 
   function _bindAll() {
+
+    const excludeBtn = _content.querySelector('#au-exclude-btn');
+    if (excludeBtn) {
+      excludeBtn.addEventListener('click', () => {
+        const sel = _content.querySelector('#au-exclude-select');
+        if (sel && sel.value) {
+          const exclusions = _settings.manualExclusions || [];
+          if (!exclusions.includes(sel.value)) {
+            if (window.AU_STORAGE) {
+               AU_STORAGE.updateSettings({ manualExclusions: [...exclusions, sel.value] });
+            }
+          }
+        }
+      });
+    }
+    
+    const restoreBtns = _content.querySelectorAll('.au-restore-btn');
+    restoreBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const id = e.target.getAttribute('data-id');
+        const exclusions = _settings.manualExclusions || [];
+        if (window.AU_STORAGE) {
+           AU_STORAGE.updateSettings({ manualExclusions: exclusions.filter(x => x !== id) });
+        }
+      });
+    });
+
     // Tab navigation
     _root.querySelectorAll('.au-nav__btn').forEach(btn =>
       btn.addEventListener('click', () => { _tab = btn.dataset.tab; _render(); })

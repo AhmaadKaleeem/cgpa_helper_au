@@ -24,7 +24,8 @@
    * @param {Course} course
    * @returns {boolean}
    */
-  function isCourseExcluded(course) {
+  function isCourseExcluded(course, manualExclusions = []) {
+    if (course.id && manualExclusions.includes(course.id)) return true;
     const grade = normalizeGrade(course.grade);
     if (AU_C.EXCLUDED_GRADES.includes(grade)) return true;
     const name = (course.name || '').trim();
@@ -159,7 +160,8 @@
    * @param {number} [decimals=2]
    * @returns {StudentRecord}
    */
-  function calculate(record, overrides, decimals) {
+  function calculate(record, overrides, manualExclusions, decimals) {
+    const excl = Array.isArray(manualExclusions) ? manualExclusions : [];
     if (!record) return record;
     const dec = typeof decimals === 'number' ? decimals : 2;
 
@@ -179,7 +181,7 @@
 
       // Earned credits: only graded (non-S/U, non-excluded) courses that were passed
       const earnedCredits = sem.courses.reduce((acc, c) => {
-        if (isCourseExcluded(c)) {
+        if (isCourseExcluded(c, excl)) {
           hasNonCreditCourses = true; // Flag for UI transparency banner
           return acc;
         }
@@ -192,7 +194,7 @@
 
       // CGPA accumulation: only courses that count toward CGPA and are not excluded
       sem.courses.forEach(course => {
-        if (course.countsTowardsCGPA && !isCourseExcluded(course)) {
+        if (course.countsTowardsCGPA && !isCourseExcluded(course, excl)) {
           const mult = getMultiplier(normalizeGrade(course.grade));
           if (mult !== null) {
             totalCountedCredits += course.credits;

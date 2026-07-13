@@ -40,13 +40,15 @@
     _panel.className = 'au-panel-wrapper';
     _panel.setAttribute('role', 'dialog');
     _panel.setAttribute('aria-label', 'GPA Optimizer');
-    _panel.innerHTML =
-      '<div class="au-header">' +
-        '<div class="au-header__brand">' +
-          '<span class="au-header__logo">GPA</span>' +
+        _panel.innerHTML =
+      '<div class="au-header" style="padding: 32px 32px 24px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-primary);">' +
+        '<div class="au-header__brand" style="display: flex; align-items: center; gap: 16px;">' +
+          '<div class="au-header__logo-container" style="width: 48px; height: 48px; flex-shrink: 0;">' +
+            '<img src="' + chrome.runtime.getURL('icons/icon48.png') + '" alt="Logo" onerror="this.parentElement.style.display=\'none\'" style="width:100%; height:100%; border-radius: var(--radius-md); object-fit: contain;">' +
+          '</div>' +
           '<div class="au-header__text">' +
-            '<div class="au-header__title">GPA Optimizer</div>' +
-            '<div class="au-header__sub">Air University</div>' +
+            '<div class="au-header__title" style="font-family: var(\'--font-serif\'); font-size: 22px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.5px; line-height: 1.2;">GPA Optimizer</div>' +
+            '<div class="au-header__sub" style="font-family: var(\'--font-sans\'); font-size: 13px; color: var(--accent-gold); font-weight: 500; margin-top: 4px;">By Ahmad Kaleem</div>' +
           '</div>' +
         '</div>' +
         '<button class="au-header__close" id="au-close-btn" aria-label="Close panel" title="Close (Esc)">&times;</button>' +
@@ -190,9 +192,6 @@
                        '<span style="font-size: 16px; font-weight: 600;">' + cgpa + '</span>';
     } else {
       _fab.innerHTML = '<span style="color: #d4af37; font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">GPA</span>';
-    }
-  } else {
-      _fab.textContent = 'GPA';
     }
   }
 
