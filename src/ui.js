@@ -27,6 +27,7 @@
   ];
 
   const GRADE_OPTS = ['A','A-','B+','B','B-','C+','C','C-','D+','D','F','XF','S','U','W'];
+  function _getGradeOpts() { return _settings.degreeLevel === 'graduate' ? GRADE_OPTS.filter(g => g !== 'C-' && g !== 'D' && g !== 'D+') : GRADE_OPTS; }
 
   // =========================================================================
   // SVG Icons (inline, minimal)
@@ -63,6 +64,25 @@
     AU_BUS.on(AU_C.EVENTS.UI_REFRESH,       _onData);
     AU_BUS.on(AU_C.EVENTS.SETTINGS_CHANGED, _onSettingsChanged);
     _renderWaiting();
+  }
+
+  
+  function _getAcademicStanding(cgpa, level) {
+    if (level === 'graduate') {
+      if (cgpa >= 3.75) return { label: 'Honor', color: 'var(--success)' };
+      if (cgpa >= 3.50) return { label: 'Good', color: 'var(--info)' };
+      if (cgpa >= 3.00) return { label: 'Satisfactory', color: 'var(--text-secondary)' };
+      return { label: 'Probation', color: 'var(--danger)' };
+    } else {
+      if (cgpa >= 3.75) return { label: 'High Honors', color: 'var(--success)' };
+      if (cgpa >= 3.50) return { label: 'Honors', color: 'var(--success)' };
+      if (cgpa >= 3.00) return { label: 'Good', color: 'var(--info)' };
+      if (cgpa >= 2.50) return { label: 'Fair', color: 'var(--text-secondary)' };
+      if (cgpa >= 2.00) return { label: 'Satisfactory', color: 'var(--text-secondary)' };
+      if (cgpa >= 1.80) return { label: 'Warning', color: 'var(--warning)' };
+      if (cgpa >= 1.50) return { label: 'Serious Warning', color: 'var(--danger)' };
+      return { label: 'Dismissed', color: 'var(--danger)' };
+    }
   }
 
   function _onData(state) {
@@ -319,7 +339,7 @@
         if (_searchTerm && !c.name.toLowerCase().includes(_searchTerm.toLowerCase())) return '';
 
         const isOn = !!overrides[c.id];
-        const selOpts = GRADE_OPTS.map(g => {
+        const selOpts = _getGradeOpts().map(g => {
           const sel = (isOn && overrides[c.id] === g) || (!isOn && c.normalizedGrade === g);
           return '<option value="' + g + '"' + (sel ? ' selected' : '') + '>' + g + '</option>';
         }).join('');

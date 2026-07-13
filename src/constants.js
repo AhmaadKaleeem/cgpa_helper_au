@@ -75,6 +75,7 @@
   };
 
   const DEFAULT_SETTINGS = {
+    degreeLevel:       'undergraduate',
     theme:             'dark',
     gpaDecimals:       2,
     summerCreditLimit: 9,
