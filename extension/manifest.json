@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "AU GPA Optimizer",
+  "name": "AU GradePilot",
   "version": "2.0.0",
-  "description": "Production-grade GPA optimizer for Air University Student Portal. Dashboard, retake simulator, target planner, analytics and more.",
+  "description": "Production-grade GradePilot for Air University Student Portal. Dashboard, retake simulator, target planner, analytics and more.",
   "permissions": ["storage"],
   "host_permissions": ["https://portals.au.edu.pk/*"],
   "content_scripts": [

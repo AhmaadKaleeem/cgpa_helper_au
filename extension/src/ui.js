@@ -123,7 +123,7 @@
     _content.innerHTML =
       '<div class="au-onboard">' +
         '<div class="au-onboard__icon">GPA</div>' +
-        '<div class="au-onboard__title">Welcome to GPA Optimizer</div>' +
+        '<div class="au-onboard__title">Welcome to GradePilot</div>' +
         '<div class="au-onboard__steps">' +
           '<div class="au-onboard__step">' +
             '<span class="au-onboard__step-num">1</span>' +
@@ -831,7 +831,7 @@
 
       _section('About',
         '<div class="au-credits">' +
-          '<p>GPA Optimizer v2.0</p>' +
+          '<p>GradePilot v2.0</p>' +
           '<p>Developed by <strong>Ahmad Kaleem Bhatti</strong></p>' +
           '<p>Air University, Islamabad</p>' +
           '<a href="https://www.linkedin.com/in/ahmadkaleembhatti/" target="_blank" rel="noopener">LinkedIn</a>' +

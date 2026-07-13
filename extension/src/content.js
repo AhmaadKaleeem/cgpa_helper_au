@@ -38,7 +38,7 @@
     try {
       await AU_STORAGE.load();
     } catch (e) {
-      console.error('[AU GPA Optimizer] Storage load error:', e);
+      console.error('[AU GradePilot] Storage load error:', e);
     }
 
     // Initial parse attempt

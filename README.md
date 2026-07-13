@@ -1,6 +1,6 @@
-# AU GPA Optimizer
+# AU GradePilot
 
-The AU GPA Optimizer is a Chrome Extension designed for Air University students. It integrates into the AU Student Portal to calculate your CGPA, handle retake policies, and help plan future semesters.
+The AU GradePilot is a Chrome Extension designed for Air University students. It integrates into the AU Student Portal to calculate your CGPA, handle retake policies, and help plan future semesters.
 
 ## Features
 - **Calculate CGPA**: View your CGPA, SGPA, and earned credits.

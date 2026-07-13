@@ -1,5 +1,5 @@
 node_modules/
 .env
-src/env.js
+extension/src/env.js
 .agents/
 skills-lock.json

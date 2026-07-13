@@ -1,9 +1,9 @@
-# Privacy Policy for AU GPA Optimizer
+# Privacy Policy for AU GradePilot
 
 **Effective Date:** July 2026
 
 ## Overview
-AU GPA Optimizer ("the Extension") respects your privacy. It is designed to run entirely locally within your web browser. 
+AU GradePilot ("the Extension") respects your privacy. It is designed to run entirely locally within your web browser. 
 
 ## Data Collection and Usage
 - **No Data Collection:** The Extension does not collect, transmit, or store any personal or academic data on external servers.

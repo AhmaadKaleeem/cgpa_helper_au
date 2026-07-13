@@ -1,6 +1,6 @@
-# AU GPA Optimizer - User Manual
+# AU GradePilot - User Manual
 
-This manual explains how to install and use the AU GPA Optimizer extension.
+This manual explains how to install and use the AU GradePilot extension.
 
 ## 1. Installation
 

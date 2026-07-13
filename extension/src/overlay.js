@@ -38,7 +38,7 @@
     _panel = document.createElement('div');
     _panel.className = 'au-panel-wrapper';
     _panel.setAttribute('role', 'dialog');
-    _panel.setAttribute('aria-label', 'GPA Optimizer');
+    _panel.setAttribute('aria-label', 'GradePilot');
         _panel.innerHTML =
       '<div class="au-header" style="padding: 32px 32px 24px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-primary);">' +
         '<div class="au-header__brand" style="display: flex; align-items: center; gap: 16px;">' +
@@ -46,7 +46,7 @@
             '<img src="' + chrome.runtime.getURL('icons/icon48.png') + '" alt="Logo" onerror="this.parentElement.style.display=\'none\'" style="width:100%; height:100%; border-radius: var(--radius-md); object-fit: contain;">' +
           '</div>' +
           '<div class="au-header__text">' +
-            '<div class="au-header__title" style="font-family: var(\'--font-serif\'); font-size: 22px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.5px; line-height: 1.2;">GPA Optimizer</div>' +
+            '<div class="au-header__title" style="font-family: var(\'--font-serif\'); font-size: 22px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.5px; line-height: 1.2;">GradePilot</div>' +
             '<div class="au-header__sub" style="font-family: var(\'--font-sans\'); font-size: 13px; color: var(--accent-gold); font-weight: 500; margin-top: 4px;">By Ahmad Kaleem</div>' +
           '</div>' +
         '</div>' +
@@ -72,8 +72,8 @@
   function _buildToggleBtn() {
     _fab = document.createElement('button');
     _fab.className = 'au-fab';
-    _fab.setAttribute('aria-label', 'Open GPA Optimizer');
-    _fab.title = 'GPA Optimizer (Ctrl+Shift+G)';
+    _fab.setAttribute('aria-label', 'Open GradePilot');
+    _fab.title = 'GradePilot (Ctrl+Shift+G)';
     _fab.innerHTML = '<span style="color: #d4af37; font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">GPA</span>';
     
     chrome.storage.local.get(['auFabPosition'], (res) => {
