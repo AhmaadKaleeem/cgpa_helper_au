@@ -1,39 +1,56 @@
-# AU GradePilot
+# GradePilot
 
-The AU GradePilot is a Chrome Extension designed for Air University students. It integrates into the AU Student Portal to calculate your CGPA, handle retake policies, and help plan future semesters.
+GradePilot is a browser tool built for Air University students. It reads your student portal grade report and calculates your true academic standing. It applies university retake rules automatically and helps you plan your future semesters.
 
-## Features
-- **Calculate CGPA**: View your CGPA, SGPA, and earned credits.
-- **Retake Logic**: Applies Air University's retake policies, factoring in only the best grade for repeated courses. It also excludes non-credit courses (e.g., S/U grades, Pre-Calculus).
-- **Target Planning**: Input a target CGPA to see the average SGPA required for remaining semesters.
-- **Impact Analysis**: Identifies which past courses yield the highest GPA increase if retaken.
-- **Local Operation**: The extension runs entirely in your browser. No external servers or data tracking.
+## What It Does For You
 
-## Installation
-You can install this extension via a ZIP file or by cloning from GitHub.
+Calculate True Grades
+The tool calculates your Semester GPA and Cumulative GPA. It drops non credit courses and applies the best grade for retaken subjects. 
 
-1. Extract the downloaded ZIP file or clone this repository.
-2. Open Google Chrome and navigate to `chrome://extensions/`.
-3. Enable **Developer Mode** in the top right corner.
-4. Click **Load unpacked** and select the directory containing `manifest.json`.
-5. Log into the AU Student Portal and navigate to your Grade Report.
+Plan Your Degree
+Input a target score. The tool tells you exactly what grades you need in your remaining semesters to graduate with that score. 
 
-For detailed instructions on using the extension, please see the [User Manual](USER_MANUAL.md).
+Simulate Retakes
+Find out exactly how much your score will increase if you retake specific past courses. The tool ranks your past classes to show you where to spend your effort. 
 
-## Technical Overview
-The extension is built using ES2022 Vanilla JavaScript and adheres to Manifest V3 Content Security Policies.
+## How To Install 
 
-### Architecture
-- **Isolated UI (`src/overlay.js` & `src/ui.js`)**: Rendered inside a Shadow DOM to prevent CSS conflicts with the portal.
-- **DOM Parser (`src/parser.js`)**: Extracts data from the HTML structure.
-- **Engine (`src/engine.js`)**: Calculates GPAs and applies university retake rules.
-- **Optimizer (`src/optimizer.js`)**: Generates pacing strategies for target CGPAs and dynamic retake simulations.
-- **Messaging (`src/eventBus.js`)**: Uses a Publish-Subscribe event bus for module communication.
-- **Storage (`src/storage.js`)**: Uses `chrome.storage.local` for data persistence.
+There are currently two ways to install GradePilot on your computer.
 
-## Open Source License
-This codebase is open source. You may freely reuse, revise, modify, and distribute this code. 
+Install from a ZIP File
+1. Download the extension ZIP file and extract it.
+2. Open Google Chrome and go to the extensions page.
+3. Turn on Developer Mode in the top right.
+4. Click Load unpacked and select your extracted folder.
+5. Log into the student portal and view your grade report. 
 
----
-**Designed by Ahmad Kaleem Bhatti** (BSCSev-F-24-A)  
-[LinkedIn](https://www.linkedin.com/in/ahmadkaleembhatti/)
+Install from GitHub
+Developers can clone this repository directly. 
+1. Run git pull to get the latest code.
+2. Follow the steps above to load the unpacked extension in Chrome. 
+
+Coming Soon Windows Setup Wizard
+We are building a dedicated Windows installer. Soon you will be able to download a standard executable file. You will double click the installer and it will automatically handle the folder creation and setup process for you. 
+
+## How It Works Under The Hood
+
+GradePilot uses clean ES2022 Vanilla JavaScript and follows strict security policies. 
+
+User Interface
+The tool renders its interface inside a Shadow DOM. This isolates the styles and prevents the extension from breaking the university portal layout. 
+
+Data Extraction
+The parser reads the HTML structure of the university portal and extracts your course names and grades. 
+
+Math Engine
+The engine calculates all grades. It strictly enforces the university policy to handle repeated courses and summer classes. 
+
+Data Storage
+Your data never leaves your browser. The tool uses local browser storage to save your settings. 
+
+## License
+
+This project is open source. You may reuse and modify this code. 
+
+Designed by Ahmad Kaleem Bhatti 
+Read the User Manual for complete instructions.
