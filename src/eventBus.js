@@ -1,6 +1,6 @@
 /**
- * AU GPA Optimizer — eventBus.js
- * Lightweight publish-subscribe event system. Exposed as window.AU_BUS
+ * AU eventBus.js
+ * Lightweight publish-subscribe event system. 
  * @author Ahmad Kaleem Bhatti (BSCSev-F-24-A)
  */
 (function () {

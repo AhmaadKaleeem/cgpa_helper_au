@@ -1,7 +1,6 @@
 /**
- * AU GPA Optimizer — analytics.js
+ * AU analytics.js
  * Secure Google Analytics 4 Measurement Protocol integration.
- * Exposed as window.AU_ANALYTICS
  * @author Ahmad Kaleem Bhatti (BSCSev-F-24-A)
  */
 (function () {

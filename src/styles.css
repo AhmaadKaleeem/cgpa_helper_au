@@ -1,12 +1,12 @@
 /* ═══════════════════════════════════════════════════════════════════
-   AU GPA Optimizer v2 — Design System & Styles
+   AU GPA Optimizer v2 - Design System & Styles
    Scoped to Shadow DOM. Zero leakage to host.
    Author: Ahmad Kaleem Bhatti
 ═══════════════════════════════════════════════════════════════════ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* ── Design Tokens (Dark — default) ─────────────────────────────── */
+/* ── Design Tokens (Dark - default) ─────────────────────────────── */
 :host {
   /* Backgrounds */
   --bg-primary:       #FDFBF7;
@@ -200,6 +200,8 @@
 /* ── Navigation ─────────────────────────────────────────────────── */
 .au-nav {
   display: flex;
+  flex-wrap: wrap;
+  overflow-x: auto;
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-primary);
   flex-shrink: 0;

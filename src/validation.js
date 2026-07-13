@@ -1,5 +1,5 @@
 /**
- * AU GPA Optimizer — validation.js
+ * AU validation.js
  * @author Ahmad Kaleem Bhatti (BSCSev-F-24-A)
  */
 (function () {

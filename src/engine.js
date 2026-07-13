@@ -1,7 +1,6 @@
 /**
- * AU GPA Optimizer — engine.js
- * Pure GPA calculation engine. Never touches DOM, storage, or Chrome APIs.
- * Exposed as window.AU_ENGINE
+ * AU engine.js
+ * Core logic for GPA calculations.
  * @author Ahmad Kaleem Bhatti (BSCSev-F-24-A)
  */
 (function () {
@@ -67,10 +66,10 @@
           if (history[key] !== undefined) {
             isRetake = true;
             if (multiplier > history[key].bestMultiplier) {
-              // Improved — supersede old entry
+              // Improved - supersede old entry
               history[key] = { bestMultiplier: multiplier, bestSemId: sem.id };
             } else {
-              // Not improved — this attempt doesn't count
+              // Not improved - this attempt doesn't count
               countsTowardsCGPA = false;
             }
           } else {
@@ -133,10 +132,11 @@
    * @param {number} [decimals=2]
    * @returns {{ sgpa: number, countedCredits: number, qualityPoints: number }}
    */
-  function calcSGPA(semester, decimals) {
+  function calcSGPA(semester, excl, decimals) {
     let countedCredits = 0;
     let qualityPoints = 0;
     semester.courses.forEach(course => {
+      if (isCourseExcluded(course, excl)) return;
       const grade = normalizeGrade(course.grade);
       const mult = getMultiplier(grade);
       if (mult !== null && !AU_C.EXCLUDED_GRADES.includes(grade)) {
@@ -177,7 +177,7 @@
     let hasNonCreditCourses = false;
 
     const updatedSemesters = semesters.map(sem => {
-      const { sgpa, countedCredits, qualityPoints } = calcSGPA(sem, dec);
+      const { sgpa, countedCredits, qualityPoints } = calcSGPA(sem, excl, dec);
 
       // Earned credits: only graded (non-S/U, non-excluded) courses that were passed
       const earnedCredits = sem.courses.reduce((acc, c) => {

@@ -1,6 +1,6 @@
 /**
- * AU GPA Optimizer v2 — constants.js
- * All application-wide constants. Exposed as window.AU_C
+ * constants.js
+ * All application-wide constants. 
  * @author Ahmad Kaleem Bhatti (BSCSev-F-24-A)
  */
 (function () {
@@ -22,8 +22,8 @@
     'XF':  0.00,
     'W':   null,
     'I':   null,
-    'S':   null,   // Satisfactory — excluded from GPA
-    'U':   null,   // Unsatisfactory — excluded from GPA
+    'S':   null,   // Satisfactory - excluded from GPA
+    'U':   null,   // Unsatisfactory - excluded from GPA
     'INC': null,
     'IP':  null,
   };

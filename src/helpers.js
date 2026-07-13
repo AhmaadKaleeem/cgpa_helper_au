@@ -1,6 +1,6 @@
 /**
- * AU GPA Optimizer — helpers.js
- * Reusable, pure utility functions. Exposed as window.AU_H
+ * AU helpers.js
+ * Reusable, pure utility functions. 
  * @author Ahmad Kaleem Bhatti (BSCSev-F-24-A)
  */
 (function () {

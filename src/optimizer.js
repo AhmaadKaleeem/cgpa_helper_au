@@ -1,7 +1,6 @@
 /**
- * AU GPA Optimizer — optimizer.js
+ * AU optimizer.js
  * Target CGPA planning, smart retake advisor, and future semester projections.
- * Exposed as window.AU_OPTIMIZER
  * @author Ahmad Kaleem Bhatti (BSCSev-F-24-A)
  */
 (function () {
@@ -216,7 +215,6 @@
 
   /**
    * Build a semester-by-semester GPA roadmap to reach a target CGPA.
-   *
    * @param {number} currentCGPA
    * @param {number} currentCounted - current counted credits
    * @param {number} targetCGPA

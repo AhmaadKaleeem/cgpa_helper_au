@@ -1,7 +1,7 @@
 /**
- * AU GPA Optimizer — parser.js
+ * AU parser.js
  * Reads the Air University portal DOM and builds a StudentRecord.
- * Never performs calculations. Exposed as window.AU_PARSER
+ * Never performs calculations. 
  * @author Ahmad Kaleem Bhatti (BSCSev-F-24-A)
  */
 (function () {

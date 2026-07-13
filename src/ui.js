@@ -1,7 +1,6 @@
 /**
- * AU GPA Optimizer v2 — ui.js
- * Full UI renderer for all tabs. Operates inside Shadow DOM.
- * Exposed as window.AU_UI
+ * ui.js
+ * Renders the extension interface.
  * @author Ahmad Kaleem Bhatti (BSCSev-F-24-A)
  */
 (function () {
@@ -239,7 +238,7 @@
       if (excludedCourses.length > 0) {
         excludedListHTML = '<ul style="margin: var(--sp-2) 0 0 0; padding-left: 20px; font-size: 13px;">' +
           excludedCourses.map(c => 
-            '<li style="margin-bottom: 4px;">' + c.name + ' (' + c.grade + ') &mdash; <a href="#" class="au-restore-btn" data-id="' + c.id + '" style="color: var(--info); font-weight: 600; text-decoration: none;">Restore</a></li>'
+            '<li style="margin-bottom: 4px;">' + c.name + ' (' + c.grade + ') - <a href="#" class="au-restore-btn" data-id="' + c.id + '" style="color: var(--info); font-weight: 600; text-decoration: none;">Restore</a></li>'
           ).join('') +
         '</ul>';
       }
@@ -252,12 +251,12 @@
       });
     });
     if (availableToExclude.length > 0) {
-      allGradesHTML = '<div style="display:flex; gap:8px; margin-top: var(--sp-3);"><select id="au-exclude-select" class="au-input" style="flex:1;">' +
-        '<option value="">Select a course to exclude...</option>' +
+      allGradesHTML = '<div style="display:flex; align-items:center; gap:8px; margin-top: var(--sp-3); width:100%;"><select id="au-exclude-select" class="au-select" style="flex:1; min-width:200px; text-overflow: ellipsis;">' +
+        '<option value="" disabled selected>Select a course to exclude...</option>' +
         availableToExclude.sort((a,b) => a.name.localeCompare(b.name)).map(c => 
           '<option value="' + c.id + '">' + c.name + ' (' + c.grade + ')</option>'
         ).join('') +
-      '</select><button id="au-exclude-btn" class="au-btn">Exclude Course</button></div>';
+      '</select><button id="au-exclude-btn" class="au-btn" style="flex-shrink:0;">Exclude Course</button></div>';
     }
     const portalErrorsCard = 
       '<div class="au-section" style="margin-top: var(--sp-5); padding-top: var(--sp-4); border-top: 1px solid var(--border-primary);">' +
@@ -332,15 +331,16 @@
         '<td>' + s.number + '</td>' +
         '<td>' + _esc(s.name) + '</td>' +
         '<td>' + _fmt(s.sgpa, dec) + '</td>' +
+        '<td>' + s.countedCredits + '</td>' +
         '<td>' + s.earnedCredits + '</td>' +
         '<td>' + s.courses.length + '</td>' +
       '</tr>'
     ).join('');
     return _section('Semester Summary',
-      '<table class="au-table">' +
-        '<thead><tr><th>#</th><th>Semester</th><th>SGPA</th><th>Cr</th><th>Courses</th></tr></thead>' +
+      '<div style="overflow-x:auto;"><table class="au-table">' +
+        '<thead><tr><th>#</th><th>Semester</th><th>SGPA</th><th>Att. Cr</th><th>Earn. Cr</th><th>Courses</th></tr></thead>' +
         '<tbody>' + rows + '</tbody>' +
-      '</table>'
+      '</table></div>'
     );
   }
 
@@ -385,9 +385,16 @@
           return '<option value="' + g + '"' + (sel ? ' selected' : '') + '>' + g + '</option>';
         }).join('');
 
+        let statusBadge = '';
+        if (c.isRetakeReplaced) {
+          statusBadge = '<div style="font-size:10px; color:var(--text-tertiary); margin-top:2px;">Replaced (Excluded from CGPA)</div>';
+        } else if (c.isRetake) {
+          statusBadge = '<div style="font-size:10px; color:var(--info); margin-top:2px;">Retaken (Counts in CGPA)</div>';
+        }
+
         return '<tr class="' + (isOn ? 'au-row--sim' : '') + '">' +
-          '<td>' + _esc(c.name) + '</td>' +
-          '<td class="au-tc">' + c.credits + '</td>' +
+          '<td><div style="font-weight:500;">' + _esc(c.name) + '</div>' + statusBadge + '</td>' +
+          '<td class="au-tc">' + (c.isRetakeReplaced ? '<span style="text-decoration:line-through;color:var(--text-tertiary);">' + c.credits + '</span>' : c.credits) + '</td>' +
           '<td class="au-tc"><span class="au-grade-pill" style="background:' + _gradeColor(c.normalizedGrade) + '">' + _esc(c.grade) + '</span></td>' +
           '<td class="au-tc"><label class="au-toggle"><input type="checkbox" class="au-retake-chk" data-id="' + c.id + '"' + (isOn ? ' checked' : '') + '><span></span></label></td>' +
           '<td><select class="au-grade-sel au-select--sm" data-id="' + c.id + '"' + (!isOn ? ' disabled' : '') + '>' + selOpts + '</select></td>' +
@@ -978,7 +985,7 @@
   }
 
   function _bindPlan() {
-    // Target optimizer — real-time
+    // Target optimizer - real-time
     const tgtInput = _root.getElementById('au-target-cgpa');
     const crInput  = _root.getElementById('au-future-cr');
     const updateTarget = AU_H.debounce(() => {

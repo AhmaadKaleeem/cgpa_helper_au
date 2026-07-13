@@ -1,5 +1,5 @@
 /**
- * AU GPA Optimizer — content.js
+ * AU content.js
  * Bootstrap: wires MutationObserver, parser, engine, and overlay together.
  * @author Ahmad Kaleem Bhatti (BSCSev-F-24-A)
  */

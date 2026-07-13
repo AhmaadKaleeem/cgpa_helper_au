@@ -1,7 +1,6 @@
 /**
- * AU GPA Optimizer — storage.js
+ * AU storage.js
  * Versioned chrome.storage.local wrapper with debounced autosave.
- * Exposed as window.AU_STORAGE
  * @author Ahmad Kaleem Bhatti (BSCSev-F-24-A)
  */
 (function () {

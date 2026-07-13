@@ -1,7 +1,6 @@
 /**
- * AU GPA Optimizer v2 — overlay.js
+ * overlay.js
  * Manages Shadow DOM host, panel, and toggle button.
- * Exposed as window.AU_OVERLAY
  * @author Ahmad Kaleem Bhatti (BSCSev-F-24-A)
  */
 (function () {

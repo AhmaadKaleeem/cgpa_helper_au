@@ -1,7 +1,6 @@
 /**
- * AU GPA Optimizer v2 — notifications.js
+ * notifications.js
  * Toast notification system rendered inside Shadow DOM.
- * Exposed as window.AU_NOTIFICATIONS
  * @author Ahmad Kaleem Bhatti (BSCSev-F-24-A)
  */
 (function () {

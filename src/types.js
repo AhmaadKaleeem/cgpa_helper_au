@@ -1,6 +1,6 @@
 /**
- * AU GPA Optimizer — types.js
- * JSDoc type definitions only — no runtime output.
+ * AU types.js
+ * JSDoc type definitions only - no runtime output.
  * @author Ahmad Kaleem Bhatti (BSCSev-F-24-A)
  */
 
