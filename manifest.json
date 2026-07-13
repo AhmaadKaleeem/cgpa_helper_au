@@ -9,6 +9,8 @@
     {
       "matches": ["https://portals.au.edu.pk/*"],
       "js": [
+        "src/env.js",
+        "src/analytics.js",
         "src/constants.js",
         "src/types.js",
         "src/helpers.js",

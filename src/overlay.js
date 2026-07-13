@@ -197,6 +197,7 @@
 
   function open() {
     _isOpen = true;
+    if (window.AU_ANALYTICS) AU_ANALYTICS.trackEvent('extension_opened');
     _panel.classList.add('au-panel-wrapper--open');
   }
 
