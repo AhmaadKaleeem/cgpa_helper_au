@@ -209,7 +209,7 @@
 
       // Hero CGPA + quick stats
       _statsGrid([
-        { label: 'CGPA',           value: _fmt(r.cgpa, dec),                              hero: true },
+        { label: 'CGPA', value: '<div style="display:flex; align-items:center; gap:8px;">' + _fmt(r.cgpa, dec) + (function(){const st = _getAcademicStanding(r.cgpa, _settings.degreeLevel || 'undergraduate'); return '<div style="background: var(--bg-surface-hover); color: ' + st.color + '; padding: 2px 8px; border-radius: var(--radius-sm); font-size: 11px; font-weight: 600; text-transform: uppercase; border: 1px solid ' + st.color + '20;">' + st.label + '</div>';})() + '</div>', hero: true },
         { label: 'Latest SGPA',   value: latestSem ? _fmt(latestSem.sgpa, dec) : 'N/A',  sub: latestSem ? _esc(latestSem.name) : '' },
         { label: 'Credits',       value: r.totalEarnedCredits + ' / ' + _totalCredits() },
         { label: 'Quality Pts',   value: _fmt(r.totalQualityPoints, dec) },
@@ -227,7 +227,48 @@
 
       // Semester table
       _semTable(r, dec),
-    ].join('');
+    ].join('') + (function(){const manualExcl = _settings.manualExclusions || [];
+    let excludedListHTML = '';
+    if (manualExcl.length > 0) {
+      const excludedCourses = [];
+      _record.semesters.forEach(s => {
+        s.courses.forEach(c => {
+          if (manualExcl.includes(c.id)) excludedCourses.push(c);
+        });
+      });
+      if (excludedCourses.length > 0) {
+        excludedListHTML = '<ul style="margin: var(--sp-2) 0 0 0; padding-left: 20px; font-size: 13px;">' +
+          excludedCourses.map(c => 
+            '<li style="margin-bottom: 4px;">' + c.name + ' (' + c.grade + ') &mdash; <a href="#" class="au-restore-btn" data-id="' + c.id + '" style="color: var(--info); font-weight: 600; text-decoration: none;">Restore</a></li>'
+          ).join('') +
+        '</ul>';
+      }
+    }
+    let allGradesHTML = '';
+    const availableToExclude = [];
+    _record.semesters.forEach(s => {
+      s.courses.forEach(c => {
+        if (!manualExcl.includes(c.id)) availableToExclude.push(c);
+      });
+    });
+    if (availableToExclude.length > 0) {
+      allGradesHTML = '<div style="display:flex; gap:8px; margin-top: var(--sp-3);"><select id="au-exclude-select" class="au-input" style="flex:1;">' +
+        '<option value="">Select a course to exclude...</option>' +
+        availableToExclude.sort((a,b) => a.name.localeCompare(b.name)).map(c => 
+          '<option value="' + c.id + '">' + c.name + ' (' + c.grade + ')</option>'
+        ).join('') +
+      '</select><button id="au-exclude-btn" class="au-btn">Exclude Course</button></div>';
+    }
+    const portalErrorsCard = 
+      '<div class="au-section" style="margin-top: var(--sp-5); padding-top: var(--sp-4); border-top: 1px solid var(--border-primary);">' +
+        '<div class="au-section__title" style="font-size: 16px; margin-bottom: 4px; color: var(--danger);">Portal Error Corrections</div>' +
+        '<p style="font-size: 13px; color: var(--text-secondary); margin-bottom: var(--sp-2); line-height: 1.5;">' +
+          'Did the AU portal make a mistake? (e.g., counting a dropped course as an \'F\'). ' +
+          'Select courses here to force the optimizer to completely ignore them in all calculations.' +
+        '</p>' +
+        excludedListHTML +
+        allGradesHTML +
+      '</div>'; return portalErrorsCard; })();
   }
 
   function _creditsBar(r) {
@@ -686,6 +727,12 @@
       ),
 
       _section('Academic',
+        _formGroup('Program Level',
+          '<select class="au-select" id="au-set-level">' +
+            '<option value="undergraduate"' + (s.degreeLevel === 'undergraduate' ? ' selected' : '') + '>Undergraduate (BS/BBA)</option>' +
+            '<option value="graduate"' + (s.degreeLevel === 'graduate' ? ' selected' : '') + '>Graduate (MS/MPhil/MBA/PhD)</option>' +
+          '</select>'
+        ) +
         _formGroup('Total Degree Credits',
           '<input class="au-input" type="number" id="au-total-cr" min="30" max="250" value="' + (s.totalDegreeCredits || 136) + '">'
         ) +
@@ -1029,6 +1076,22 @@
   }
 
   function _bindSettings() {
+
+    const levelSel = _root.getElementById('au-set-level');
+    if (levelSel) {
+      levelSel.addEventListener('change', (e) => {
+        const val = e.target.value;
+        const updates = { degreeLevel: val };
+        if (val === 'graduate') {
+          if (_settings.totalDegreeCredits === 136) updates.totalDegreeCredits = 30;
+          if (_settings.targetCGPA === 3.00) updates.targetCGPA = 3.50;
+        } else {
+          if (_settings.totalDegreeCredits === 30) updates.totalDegreeCredits = 136;
+        }
+        if (window.AU_STORAGE) AU_STORAGE.updateSettings(updates);
+      });
+    }
+    
     const id  = s => _root.getElementById(s);
     const upd = (key, fn) => { const el = id(key); if (el) el.addEventListener('change', () => AU_STORAGE.updateSettings(fn(el))); };
 
