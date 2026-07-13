@@ -26,7 +26,7 @@ Install from a ZIP File
 
 Install from GitHub
 Developers can clone this repository directly. 
-1. Run git pull to get the latest code.
+1. Run git clone https://github.com/AhmaadKaleeem/cgpa_helper_au.git to get the code.
 2. Follow the steps above to load the unpacked extension in Chrome. 
 
 Coming Soon Windows Setup Wizard
