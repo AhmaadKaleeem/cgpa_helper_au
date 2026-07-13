@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "AU GPA Optimizer",
+  "version": "2.0.0",
+  "description": "Production-grade GPA optimizer for Air University Student Portal. Dashboard, retake simulator, target planner, analytics and more.",
+  "permissions": ["storage"],
+  "host_permissions": ["https://portals.au.edu.pk/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://portals.au.edu.pk/*"],
+      "js": [
+        "src/constants.js",
+        "src/types.js",
+        "src/helpers.js",
+        "src/eventBus.js",
+        "src/storage.js",
+        "src/validation.js",
+        "src/engine.js",
+        "src/optimizer.js",
+        "src/parser.js",
+        "src/notifications.js",
+        "src/ui.js",
+        "src/overlay.js",
+        "src/content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["src/styles.css", "icons/*"],
+      "matches": ["https://portals.au.edu.pk/*"]
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
