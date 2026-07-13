@@ -172,10 +172,22 @@
         const grade = AU_H.normalizeGrade(course.grade);
         const mult = AU_ENGINE.getMultiplier(grade);
         if (mult === null) return;
-        if (mult >= 4.0) return;  // already A, nothing to improve
+        // AU Policy: Regular semester retakes allow < 2.67 (B-). Summer allows < 3.33 (B+).
+        // To show all opportunities, we use the summer threshold (< 3.33).
+        if (mult >= 3.33) return; 
         if (AU_C.EXCLUDED_GRADES.includes(grade)) return;
 
-        const impactToA = retakeImpact(record, course, 'A');
+        const currentMult = AU_ENGINE.getMultiplier(grade);
+        const impactMatrix = {};
+        const gradeOrder = ['A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D'];
+        gradeOrder.forEach(g => {
+           const gm = AU_ENGINE.getMultiplier(g);
+           if (gm !== null && gm > currentMult) {
+               impactMatrix[g] = AU_H.roundGPA(retakeImpact(record, course, g), 4);
+           }
+        });
+
+        const impactToA = impactMatrix['A'] || 0;
         const cgpaIfA = AU_H.roundGPA(record.cgpa + impactToA, 4);
         const minGrade = minGradeForTarget(record, course, target);
 
@@ -190,9 +202,11 @@
           currentGrade: grade,
           credits: course.credits,
           impactToA: AU_H.roundGPA(impactToA, 4),
+          impactMatrix,
           cgpaIfA,
           minGradeForTarget: minGrade,
           priority,
+          isSummerOnly: currentMult >= 2.67,
         });
       });
     });

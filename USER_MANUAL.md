@@ -28,7 +28,7 @@ Helps you determine the grades needed for a target CGPA.
 *   **Target CGPA**: Enter your desired CGPA.
 *   **Reality Check**: Displays the required average SGPA for remaining semesters and indicates the difficulty level.
 *   **Roadmap**: Provides a breakdown of the required SGPA per semester.
-*   **Highest Impact Actions**: Lists specific past courses that will yield the largest CGPA increase if retaken.
+*   **Strategic Opportunities**: Lists specific past courses eligible for retake (grades below B minus) according to Air University policy. Select a target grade from the dropdown to instantly view the estimated CGPA gain and click Simulate to apply it.
 *   **Advanced Planning**: Expand this section to manually input future courses and credits.
 
 ### Simulate Tab
@@ -40,16 +40,12 @@ Allows you to test hypothetical scenarios.
 ## 3. Settings
 
 Click the gear icon to access configuration options.
-*   **Total Degree Credits**: Modify this value if your degree requires a different number of total credits (default is 136).
+*   **Program Level**: Select Undergraduate or Graduate. This automatically adjusts graduation requirements and grading scales according to Air University policy.
+*   **Total Degree Credits**: Modify this value if your degree requires a different number of total credits.
 *   **Remaining Semesters**: Update the number of semesters you have left to ensure accurate roadmap pacing.
 *   **Data Management**: Clear cached data and simulations if necessary.
 
-## 4. Future Integrations
-- **AI Assistance**: Upcoming feature to provide automated, personalized recommendations based on transcript analysis.
+## 4. Licensing
+This project is open source. You are free to reuse, revise, modify, and distribute the code.
 
-## 5. Licensing and AI Reuse
-This project is open-source. You are free to reuse, revise, modify, and distribute the code.
-
-The structure is intended to be compatible with AI-assisted development. You are explicitly permitted to use AI tools (like Claude, ChatGPT, or Gemini) to read this codebase and generate modifications or new features.
-
-*Designed by Ahmad Kaleem Bhatti.*
+Designed by Ahmad Kaleem Bhatti.

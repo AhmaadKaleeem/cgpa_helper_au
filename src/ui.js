@@ -582,21 +582,26 @@
       );
     }
 
-    const rows = advisor.slice(0, 5).map(item => {
-      const minGrade = item.minGradeForTarget || 'Not possible';
+    const rows = advisor.slice(0, 5).map((item, idx) => {
+      const optGrades = Object.keys(item.impactMatrix);
+      // Filter the grades based on degreeLevel implicitly because impactMatrix will only be generated for valid grades due to getMultiplier returning null
+      const selOpts = optGrades.map(g => '<option value="' + g + '" data-impact="' + item.impactMatrix[g].toFixed(dec) + '"' + (g==='A' ? ' selected' : '') + '>' + g + '</option>').join('');
+      
       return '<div class="au-advisor-row">' +
         '<div class="au-advisor-row__left">' +
           '<div class="au-advisor-row__course">' + _esc(item.courseName) + '</div>' +
           '<div class="au-muted">' + _esc(item.semName) + ' &bull; ' + item.credits + ' cr &bull; Currently: ' +
             '<span class="au-grade-pill" style="background:' + _gradeColor(item.currentGrade) + '">' + item.currentGrade + '</span>' +
+            (item.isSummerOnly ? ' <span class="au-badge" style="background:var(--warning);color:black;margin-left:4px;font-size:10px;padding:2px 4px">Summer Only</span>' : '') +
           '</div>' +
         '</div>' +
-        '<div class="au-advisor-row__right">' +
+        '<div class="au-advisor-row__right" style="gap:4px">' +
           '<div class="au-advisor-row__impact">' +
             '<span class="au-muted">Est. Gain:</span>' +
-            '<span class="au-badge au-badge--green">+' + item.impactToA.toFixed(dec) + '</span>' +
+            '<span class="au-badge au-badge--green" id="au-impact-badge-' + idx + '">+' + item.impactToA.toFixed(dec) + '</span>' +
           '</div>' +
-          '<button class="au-btn au-btn--sm au-btn--ghost au-advisor-apply" data-id="' + item.courseId + '" data-grade="A">Simulate A</button>' +
+          '<select class="au-select au-select--sm au-advisor-sel" data-idx="' + idx + '" style="width:70px">' + selOpts + '</select>' +
+          '<button class="au-btn au-btn--sm au-btn--ghost au-advisor-apply" data-id="' + item.courseId + '" data-idx="' + idx + '">Simulate</button>' +
         '</div>' +
       '</div>';
     }).join('');
@@ -1000,11 +1005,22 @@
       });
     });
 
-    // Advisor: apply retake
+    // Advisor: dynamic apply retake and badge updates
+    _root.querySelectorAll('.au-advisor-sel').forEach(sel => {
+      sel.addEventListener('change', () => {
+        const idx = sel.dataset.idx;
+        const impact = sel.options[sel.selectedIndex].dataset.impact;
+        const badge = _root.getElementById('au-impact-badge-' + idx);
+        if (badge) badge.textContent = '+' + impact;
+      });
+    });
+
     _root.querySelectorAll('.au-advisor-apply').forEach(btn => {
       btn.addEventListener('click', () => {
-        const id    = btn.dataset.id;
-        const grade = btn.dataset.grade;
+        const id  = btn.dataset.id;
+        const idx = btn.dataset.idx;
+        const sel = _root.querySelector('.au-advisor-sel[data-idx="' + idx + '"]');
+        const grade = sel ? sel.value : 'A';
         AU_STORAGE.setOverride(id, grade);
         _refreshComputed();
         AU_NOTIFICATIONS.show('Retake applied. Check the Simulate tab.', 'success');

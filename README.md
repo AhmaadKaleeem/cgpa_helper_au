@@ -20,9 +20,6 @@ You can install this extension via a ZIP file or by cloning from GitHub.
 
 For detailed instructions on using the extension, please see the [User Manual](USER_MANUAL.md).
 
-## Future Integrations
-- **AI Assistance**: Integration of an AI advisor to provide personalized academic recommendations based on your transcript data.
-
 ## Technical Overview
 The extension is built using ES2022 Vanilla JavaScript and adheres to Manifest V3 Content Security Policies.
 
@@ -30,14 +27,12 @@ The extension is built using ES2022 Vanilla JavaScript and adheres to Manifest V
 - **Isolated UI (`src/overlay.js` & `src/ui.js`)**: Rendered inside a Shadow DOM to prevent CSS conflicts with the portal.
 - **DOM Parser (`src/parser.js`)**: Extracts data from the HTML structure.
 - **Engine (`src/engine.js`)**: Calculates GPAs and applies university retake rules.
-- **Optimizer (`src/optimizer.js`)**: Generates pacing strategies for target CGPAs.
+- **Optimizer (`src/optimizer.js`)**: Generates pacing strategies for target CGPAs and dynamic retake simulations.
 - **Messaging (`src/eventBus.js`)**: Uses a Publish-Subscribe event bus for module communication.
 - **Storage (`src/storage.js`)**: Uses `chrome.storage.local` for data persistence.
 
-## Open Source / AI Revision License
-This codebase is open-source. You may freely reuse, revise, modify, and distribute this code. 
-
-The architecture is modular to support AI-assisted development. You are permitted to provide this repository to AI assistants (e.g., Claude, ChatGPT, Gemini, Copilot) to generate new features, fix bugs, or modify the design.
+## Open Source License
+This codebase is open source. You may freely reuse, revise, modify, and distribute this code. 
 
 ---
 **Designed by Ahmad Kaleem Bhatti** (BSCSev-F-24-A)  
