@@ -16,6 +16,7 @@
   let _scenarios  = [];
   let _searchTerm = '';
   let _roadmapStrategy = 'balanced';
+  let _planningOpen = false;
 
   const TABS = [
     { id: 'overview',  label: 'Overview',  icon: _iconGrid() },
@@ -143,6 +144,8 @@
 
   function _render() {
     if (!_content) return;
+    const advPlan = _root.getElementById('au-adv-plan');
+    if (advPlan) _planningOpen = advPlan.open;
     // Apply theme
     if (_settings.theme === 'dark') {
       _root.host.classList.remove('au-light');
@@ -225,7 +228,7 @@
       _gradeDistChart(r),
 
       // Semester table
-      _semTable(r, dec),
+      _semTable(r, dec, _settings.manualExclusions || []),
     ].join('') + (function(){const manualExcl = _settings.manualExclusions || [];
     let excludedListHTML = '';
     if (manualExcl.length > 0) {
@@ -251,12 +254,12 @@
       });
     });
     if (availableToExclude.length > 0) {
-      allGradesHTML = '<div style="display:flex; align-items:center; gap:8px; margin-top: var(--sp-3); width:100%;"><select id="au-exclude-select" class="au-select" style="flex:1; min-width:200px; text-overflow: ellipsis;">' +
+      allGradesHTML = '<div style="margin-top: var(--sp-3);"><select id="au-exclude-select" class="au-select" style="width:100%; margin-bottom: 8px; text-overflow: ellipsis;">' +
         '<option value="" disabled selected>Select a course to exclude...</option>' +
         availableToExclude.sort((a,b) => a.name.localeCompare(b.name)).map(c => 
           '<option value="' + c.id + '">' + c.name + ' (' + c.grade + ')</option>'
         ).join('') +
-      '</select><button id="au-exclude-btn" class="au-btn" style="flex-shrink:0;">Exclude Course</button></div>';
+      '</select><button id="au-exclude-btn" class="au-btn" style="width:100%;">Exclude Course</button></div>';
     }
     const portalErrorsCard = 
       '<div class="au-section" style="margin-top: var(--sp-5); padding-top: var(--sp-4); border-top: 1px solid var(--border-primary);">' +
@@ -325,7 +328,7 @@
     return _section('Grade Distribution', '<div class="au-dist">' + bars + '</div>');
   }
 
-  function _semTable(r, dec) {
+  function _semTable(r, dec, manualExcl = []) {
     const rows = r.semesters.map(s =>
       '<tr>' +
         '<td>' + s.number + '</td>' +
@@ -333,14 +336,55 @@
         '<td>' + _fmt(s.sgpa, dec) + '</td>' +
         '<td>' + s.countedCredits + '</td>' +
         '<td>' + s.earnedCredits + '</td>' +
+        '<td>' + (s.sgpaExcludedCredits > 0 ? '<span style="color:var(--text-tertiary)">' + s.sgpaExcludedCredits + '</span>' : '-') + '</td>' +
+        '<td>' + (s.cgpaExcludedCredits > 0 ? '<span style="color:var(--text-tertiary)">' + s.cgpaExcludedCredits + '</span>' : '-') + '</td>' +
         '<td>' + s.courses.length + '</td>' +
       '</tr>'
     ).join('');
+
+    const exclusionNotes = [];
+    r.semesters.forEach(s => {
+      s.courses.forEach(c => {
+        if (c.id && manualExcl.includes(c.id)) {
+          exclusionNotes.push('<strong>' + _esc(c.name) + '</strong> was manually excluded. Its ' + c.credits + ' credit hours are completely removed from all GPA calculations.');
+        } else if (c.isRetakeReplaced) {
+          const allAttempts = [];
+          r.semesters.forEach(sem => sem.courses.forEach(c2 => {
+            if ((c2.name || '').toLowerCase() === (c.name || '').toLowerCase()) allAttempts.push({ sem, c: c2 });
+          }));
+          const best = allAttempts.find(a => !a.c.isRetakeReplaced);
+          if (best && best.c.id !== c.id) {
+            if (best.sem.number > s.number) {
+              exclusionNotes.push('<strong>' + _esc(c.name) + '</strong> was retaken in Semester ' + best.sem.number + '. Your grade improved to ' + best.c.grade + ', so the original ' + c.credits + ' credit hours from Semester ' + s.number + ' are excluded from your CGPA.');
+            } else {
+              exclusionNotes.push('<strong>' + _esc(c.name) + '</strong> was retaken in Semester ' + s.number + ', but the grade did not beat your previous ' + best.c.grade + '. Therefore, these ' + c.credits + ' credit hours are excluded from your CGPA.');
+            }
+          }
+        } else {
+          const g = AU_H.normalizeGrade(c.grade);
+          const isFoundation = AU_C.EXCLUDED_COURSE_PATTERNS.some(p => p.test(c.name || ''));
+          if (c.credits > 0 && (AU_C.EXCLUDED_GRADES.includes(g) || isFoundation)) {
+            exclusionNotes.push('<strong>' + _esc(c.name) + '</strong> is graded as \'' + c.grade + '\', which grants no quality points. Its ' + c.credits + ' credit hours count toward degree progress but are excluded from your SGPA.');
+          }
+        }
+      });
+    });
+
+    let notesHTML = '';
+    if (exclusionNotes.length > 0) {
+      notesHTML = '<div style="margin-top:var(--sp-3); padding:var(--sp-3); background:var(--bg-surface-hover); border-radius:var(--radius-md); font-size:12px; color:var(--text-secondary); line-height:1.5;">' +
+        '<div style="font-weight:600; color:var(--text-primary); margin-bottom:var(--sp-2);">Exclusion Details:</div>' +
+        '<ul style="margin:0; padding-left:20px;">' +
+          exclusionNotes.map(n => '<li style="margin-bottom:4px;">' + n + '</li>').join('') +
+        '</ul>' +
+      '</div>';
+    }
+
     return _section('Semester Summary',
       '<div style="overflow-x:auto;"><table class="au-table">' +
-        '<thead><tr><th>#</th><th>Semester</th><th>SGPA</th><th>Att. Cr</th><th>Earn. Cr</th><th>Courses</th></tr></thead>' +
+        '<thead><tr><th>#</th><th>Semester</th><th>SGPA</th><th>Att. Cr</th><th>Earn. Cr</th><th>Exc. (SGPA)</th><th>Exc. (CGPA)</th><th>Courses</th></tr></thead>' +
         '<tbody>' + rows + '</tbody>' +
-      '</table></div>'
+      '</table></div>' + notesHTML
     );
   }
 
@@ -496,7 +540,7 @@
       _renderHighestImpactActions(advisor, target, dec, r),
 
       // Advanced Planning
-      '<details class="au-details">' +
+      '<details class="au-details" id="au-adv-plan"' + (_planningOpen ? ' open' : '') + '>' +
         '<summary class="au-details__summary">Advanced Planning (Future Semesters)</summary>' +
         '<div class="au-details__content">' +
           _renderFutureSems(dec) +
@@ -589,11 +633,16 @@
       );
     }
 
-    const rows = advisor.slice(0, 5).map((item, idx) => {
+    const overrides = _settings.overrides || {};
+    const rows = advisor.map((item, idx) => {
       const optGrades = Object.keys(item.impactMatrix);
-      // Filter the grades based on degreeLevel implicitly because impactMatrix will only be generated for valid grades due to getMultiplier returning null
       const selOpts = optGrades.map(g => '<option value="' + g + '" data-impact="' + item.impactMatrix[g].toFixed(dec) + '"' + (g==='A' ? ' selected' : '') + '>' + g + '</option>').join('');
       
+      const isSimulated = !!overrides[item.courseId];
+      const simulateBtn = isSimulated
+        ? '<button class="au-btn au-btn--sm au-btn--danger au-advisor-remove" data-id="' + item.courseId + '">Remove</button>'
+        : '<button class="au-btn au-btn--sm au-btn--ghost au-advisor-apply" data-id="' + item.courseId + '" data-idx="' + idx + '">Simulate</button>';
+
       return '<div class="au-advisor-row">' +
         '<div class="au-advisor-row__left">' +
           '<div class="au-advisor-row__course">' + _esc(item.courseName) + '</div>' +
@@ -607,8 +656,8 @@
             '<span class="au-muted">Est. Gain:</span>' +
             '<span class="au-badge au-badge--green" id="au-impact-badge-' + idx + '">+' + item.impactToA.toFixed(dec) + '</span>' +
           '</div>' +
-          '<select class="au-select au-select--sm au-advisor-sel" data-idx="' + idx + '" style="width:70px">' + selOpts + '</select>' +
-          '<button class="au-btn au-btn--sm au-btn--ghost au-advisor-apply" data-id="' + item.courseId + '" data-idx="' + idx + '">Simulate</button>' +
+          '<select class="au-select au-select--sm au-advisor-sel" data-idx="' + idx + '" style="width:70px"' + (isSimulated ? ' disabled' : '') + '>' + selOpts + '</select>' +
+          simulateBtn +
         '</div>' +
       '</div>';
     }).join('');
@@ -1031,6 +1080,16 @@
         AU_STORAGE.setOverride(id, grade);
         _refreshComputed();
         AU_NOTIFICATIONS.show('Retake applied. Check the Simulate tab.', 'success');
+        _render();
+      });
+    });
+
+    _root.querySelectorAll('.au-advisor-remove').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
+        AU_STORAGE.removeOverride(id);
+        _refreshComputed();
+        AU_NOTIFICATIONS.show('Retake simulation removed.', 'success');
         _render();
       });
     });

@@ -179,16 +179,24 @@
     const updatedSemesters = semesters.map(sem => {
       const { sgpa, countedCredits, qualityPoints } = calcSGPA(sem, excl, dec);
 
-      // Earned credits: only graded (non-S/U, non-excluded) courses that were passed
+      // Earned credits: passed courses. Foundation/S courses count toward degree progress!
       const earnedCredits = sem.courses.reduce((acc, c) => {
-        if (isCourseExcluded(c, excl)) {
-          hasNonCreditCourses = true; // Flag for UI transparency banner
-          return acc;
-        }
+        if (c.id && excl.includes(c.id)) return acc; // manual exclusion
+        if (c.isRetakeReplaced) return acc; // superseded attempt does not grant duplicate credits
         const g = normalizeGrade(c.grade);
         if (g && !AU_C.FAILURE_GRADES.includes(g) && g !== 'W') {
           return acc + c.credits;
         }
+        return acc;
+      }, 0);
+
+      const sgpaExcludedCredits = sem.courses.reduce((acc, c) => {
+        if (isCourseExcluded(c, excl)) return acc + c.credits;
+        return acc;
+      }, 0);
+
+      const cgpaExcludedCredits = sem.courses.reduce((acc, c) => {
+        if (c.isRetakeReplaced) return acc + c.credits;
         return acc;
       }, 0);
 
@@ -203,7 +211,7 @@
         }
       });
 
-      return Object.assign({}, sem, { sgpa, countedCredits, qualityPoints, earnedCredits });
+      return Object.assign({}, sem, { sgpa, countedCredits, qualityPoints, earnedCredits, sgpaExcludedCredits, cgpaExcludedCredits });
     });
 
     totalEarnedCredits = updatedSemesters.reduce((a, s) => a + s.earnedCredits, 0);

@@ -171,9 +171,7 @@
         const grade = AU_H.normalizeGrade(course.grade);
         const mult = AU_ENGINE.getMultiplier(grade);
         if (mult === null) return;
-        // AU Policy: Regular semester retakes allow < 2.67 (B-). Summer allows < 3.33 (B+).
-        // To show all opportunities, we use the summer threshold (< 3.33).
-        if (mult >= 3.33) return; 
+        if (mult >= 3.33) return; // Restoring the AU B+ policy ceiling
         if (AU_C.EXCLUDED_GRADES.includes(grade)) return;
 
         const currentMult = AU_ENGINE.getMultiplier(grade);
@@ -185,6 +183,8 @@
                impactMatrix[g] = AU_H.roundGPA(retakeImpact(record, course, g), 4);
            }
         });
+
+        if (Object.keys(impactMatrix).length === 0) return;
 
         const impactToA = impactMatrix['A'] || 0;
         const cgpaIfA = AU_H.roundGPA(record.cgpa + impactToA, 4);
