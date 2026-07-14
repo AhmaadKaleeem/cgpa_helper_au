@@ -10,5 +10,6 @@ namespace GradePilotInstaller
             InitializeComponent();
             DataContext = viewModel;
 
+        }
     }
 }

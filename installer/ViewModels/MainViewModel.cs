@@ -25,7 +25,6 @@ namespace GradePilotInstaller.ViewModels
 
         public ICommand NextCommand { get; }
         public ICommand BackCommand { get; }
-        public ICommand CancelCommand { get; }
 
         public MainViewModel(
             INavigationService navigationService,
@@ -52,7 +51,6 @@ namespace GradePilotInstaller.ViewModels
 
             NextCommand = new RelayCommand(OnNext, CanNext);
             BackCommand = new RelayCommand(OnBack, CanBack);
-            CancelCommand = new RelayCommand(OnCancel);
 
             // Show splash screen first, then navigate to welcome
             _navigationService.NavigateTo(splash);
@@ -142,39 +140,7 @@ namespace GradePilotInstaller.ViewModels
             return _currentIndex > 0;
         }
 
-        public bool ForceClose { get; set; } = false;
-        private bool _isConfirmingCancel = false;
 
-        private void OnCancel(object? parameter)
-        {
-            if (_isConfirmingCancel) return;
-            _isConfirmingCancel = true;
-            
-            var viewModel = new ConfirmDialogViewModel("Stop installing GradePilot?");
-            var dialog = new Views.ConfirmDialog(viewModel);
-            
-            viewModel.RequestClose = () => dialog.Close();
-            
-            try
-            {
-                dialog.ShowDialog();
-                
-                if (viewModel.Result == true)
-                {
-                    ForceClose = true;
-                    System.Windows.Application.Current.Shutdown();
-                }
-                else
-                {
-                    _isConfirmingCancel = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show(ex.ToString());
-                _isConfirmingCancel = false;
-            }
-        }
 
         private void OnCurrentViewChanged()
         {
