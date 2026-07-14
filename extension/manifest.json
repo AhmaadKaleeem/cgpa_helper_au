@@ -24,6 +24,7 @@
         "src/optimizer.js",
         "src/parser.js",
         "src/notifications.js",
+        "src/xlsx.full.min.js",
         "src/ui.js",
         "src/overlay.js",
         "src/content.js"

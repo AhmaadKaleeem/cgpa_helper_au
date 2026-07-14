@@ -87,8 +87,8 @@
    * @param {number} [dec=2]
    * @returns {number}
    */
-  function projectFull(record, overrides, futureSems, dec) {
-    const simRecord = AU_ENGINE.calculate(record, overrides, dec || 2);
+  function projectFull(record, overrides, manualExclusions, futureSems, dec) {
+    const simRecord = AU_ENGINE.calculate(record, overrides, manualExclusions || [], dec || 2);
     const { projectedCGPA } = projectWithFutureSems(
       simRecord.cgpa,
       simRecord.totalCountedCredits,

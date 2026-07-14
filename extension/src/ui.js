@@ -404,8 +404,8 @@
   function _tabSimulate() {
     const overrides    = AU_STORAGE.getOverrides();
     const dec          = _dec();
-    const simRecord    = AU_ENGINE.calculate(_record, overrides, dec);
-    const origRecord   = AU_ENGINE.calculate(_record, {}, dec);
+    const simRecord    = AU_ENGINE.calculate(_record, overrides, _settings.manualExclusions || [], dec);
+    const origRecord   = AU_ENGINE.calculate(_record, {}, _settings.manualExclusions || [], dec);
     const delta        = AU_H.roundGPA(simRecord.cgpa - origRecord.cgpa, dec);
     const deltaStr     = (delta > 0 ? '+' : '') + delta.toFixed(dec);
     const deltaCls     = delta > 0 ? 'green' : delta < 0 ? 'red' : 'muted';
@@ -427,7 +427,14 @@
 
     // Course tables by semester
     simRecord.semesters.forEach(sem => {
-      const rows = sem.courses.map(c => {
+      const sortedCourses = [...sem.courses].sort((a, b) => {
+        const aSim = !!overrides[a.id];
+        const bSim = !!overrides[b.id];
+        if (aSim && !bSim) return -1;
+        if (!aSim && bSim) return 1;
+        return a.name.localeCompare(b.name);
+      });
+      const rows = sortedCourses.map(c => {
         if (AU_ENGINE.isCourseExcluded(c)) return '';
         // Apply search filter
         if (_searchTerm && !c.name.toLowerCase().includes(_searchTerm.toLowerCase())) return '';
@@ -474,8 +481,8 @@
 
   function _renderScenarios(dec) {
     const overrides = AU_STORAGE.getOverrides();
-    const simCGPA = AU_ENGINE.calculate(_record, overrides, dec).cgpa;
-    const fullProj = AU_OPTIMIZER.projectFull(_record, overrides, _futureSems, dec);
+    const simCGPA = AU_ENGINE.calculate(_record, overrides, _settings.manualExclusions || [], dec).cgpa;
+    const fullProj = AU_OPTIMIZER.projectFull(_record, overrides, _settings.manualExclusions || [], _futureSems, dec);
 
     const cards = _scenarios.map((sc, i) =>
       '<div class="au-card">' +
@@ -787,7 +794,6 @@
     const s = _settings;
     return [
       _section('Appearance',
-        _formGroup('Theme', '<label class="au-toggle"><input type="checkbox" id="au-dark-mode"' + (s.theme === 'dark' ? ' checked' : '') + '><span></span></label> <span class="au-muted" style="margin-left:8px">' + (s.theme === 'dark' ? 'Dark' : 'Light') + '</span>', true) +
         _formGroup('GPA Decimals',
           '<select class="au-select" id="au-gpa-dec">' +
             '<option value="2"' + (s.gpaDecimals !== 3 ? ' selected' : '') + '>2 places</option>' +
@@ -1004,7 +1010,7 @@
       if (!name) { AU_NOTIFICATIONS.show('Enter a scenario name.', 'warning'); return; }
       const dec      = _dec();
       const overrides = AU_STORAGE.getOverrides();
-      const fullProj  = AU_OPTIMIZER.projectFull(_record, overrides, _futureSems, dec);
+      const fullProj  = AU_OPTIMIZER.projectFull(_record, overrides, _settings.manualExclusions || [], _futureSems, dec);
       _scenarios.push({
         id: 'sc-' + AU_H.generateId(),
         name,
@@ -1186,7 +1192,6 @@
     const id  = s => _root.getElementById(s);
     const upd = (key, fn) => { const el = id(key); if (el) el.addEventListener('change', () => AU_STORAGE.updateSettings(fn(el))); };
 
-    upd('au-dark-mode',  el => { _settings.theme = el.checked ? 'dark' : 'light'; return { theme: _settings.theme }; });
     upd('au-gpa-dec',    el => ({ gpaDecimals: parseInt(el.value, 10) }));
     upd('au-total-cr',   el => ({ totalDegreeCredits: parseInt(el.value, 10) }));
     upd('au-rm-sems',    el => ({ roadmapSemesters: parseInt(el.value, 10) }));
@@ -1236,7 +1241,7 @@
   function _refreshComputed() {
     if (!_record) return;
     const overrides = AU_STORAGE.getOverrides();
-    _computed = AU_ENGINE.calculate(_record, overrides, _dec());
+    _computed = AU_ENGINE.calculate(_record, overrides, _settings.manualExclusions || [], _dec());
   }
 
   function _clearAllOverrides() {
