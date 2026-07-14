@@ -171,6 +171,7 @@
     // Apply retake logic
     const semesters = applyRetakeLogic(working.semesters);
 
+    let totalAttemptedCredits = 0;
     let totalCountedCredits = 0;
     let totalQualityPoints = 0;
     let totalEarnedCredits = 0;
@@ -179,12 +180,17 @@
     const updatedSemesters = semesters.map(sem => {
       const { sgpa, countedCredits, qualityPoints } = calcSGPA(sem, excl, dec);
 
-      // Earned credits: passed courses. Foundation/S courses count toward degree progress!
+      const attemptedCredits = sem.courses.reduce((acc, c) => {
+        if (c.id && excl.includes(c.id)) return acc; // manual exclusion completely removes from Attempted
+        return acc + c.credits;
+      }, 0);
+
+      // Earned credits: passed courses. Exclude manual, Foundation, and S/U courses from Earned Credits.
       const earnedCredits = sem.courses.reduce((acc, c) => {
-        if (c.id && excl.includes(c.id)) return acc; // manual exclusion
+        if (isCourseExcluded(c, excl)) return acc; // Skips manual, Foundation, S/U, W, I, etc.
         if (c.isRetakeReplaced) return acc; // superseded attempt does not grant duplicate credits
         const g = normalizeGrade(c.grade);
-        if (g && !AU_C.FAILURE_GRADES.includes(g) && g !== 'W') {
+        if (g && !AU_C.FAILURE_GRADES.includes(g)) {
           return acc + c.credits;
         }
         return acc;
@@ -211,10 +217,11 @@
         }
       });
 
-      return Object.assign({}, sem, { sgpa, countedCredits, qualityPoints, earnedCredits, sgpaExcludedCredits, cgpaExcludedCredits });
+      return Object.assign({}, sem, { sgpa, countedCredits, qualityPoints, earnedCredits, attemptedCredits, sgpaExcludedCredits, cgpaExcludedCredits });
     });
 
     totalEarnedCredits = updatedSemesters.reduce((a, s) => a + s.earnedCredits, 0);
+    totalAttemptedCredits = updatedSemesters.reduce((a, s) => a + s.attemptedCredits, 0);
     const cgpa = totalCountedCredits > 0
       ? AU_H.roundGPA(totalQualityPoints / totalCountedCredits, dec)
       : 0;
@@ -224,6 +231,7 @@
       cgpa,
       totalCountedCredits,
       totalEarnedCredits,
+      totalAttemptedCredits,
       totalQualityPoints: AU_H.roundGPA(totalQualityPoints, dec),
       hasNonCreditCourses,
     });

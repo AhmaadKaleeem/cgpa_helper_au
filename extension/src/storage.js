@@ -20,11 +20,19 @@
   const _autosave = AU_H.debounce(_write, 800);
 
   function _write() {
-    chrome.storage.local.set({ [AU_C.STORAGE_KEY]: _state }, () => {
-      if (chrome.runtime.lastError) {
-        console.error('[AU_STORAGE] Write error:', chrome.runtime.lastError);
+    try {
+      chrome.storage.local.set({ [AU_C.STORAGE_KEY]: _state }, () => {
+        if (chrome.runtime.lastError) {
+          console.error('[AU_STORAGE] Write error:', chrome.runtime.lastError);
+        }
+      });
+    } catch (e) {
+      if (e.message && e.message.includes('Extension context invalidated')) {
+        console.warn('[AU_STORAGE] Extension context invalidated (extension was updated/reloaded). Please refresh the page.');
+      } else {
+        console.error('[AU_STORAGE] Write exception:', e);
       }
-    });
+    }
   }
 
   /**

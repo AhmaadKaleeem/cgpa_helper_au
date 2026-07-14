@@ -334,7 +334,7 @@
         '<td>' + s.number + '</td>' +
         '<td>' + _esc(s.name) + '</td>' +
         '<td>' + _fmt(s.sgpa, dec) + '</td>' +
-        '<td>' + s.countedCredits + '</td>' +
+        '<td>' + s.attemptedCredits + '</td>' +
         '<td>' + s.earnedCredits + '</td>' +
         '<td>' + (s.sgpaExcludedCredits > 0 ? '<span style="color:var(--text-tertiary)">' + s.sgpaExcludedCredits + '</span>' : '-') + '</td>' +
         '<td>' + (s.cgpaExcludedCredits > 0 ? '<span style="color:var(--text-tertiary)">' + s.cgpaExcludedCredits + '</span>' : '-') + '</td>' +
@@ -363,8 +363,12 @@
         } else {
           const g = AU_H.normalizeGrade(c.grade);
           const isFoundation = AU_C.EXCLUDED_COURSE_PATTERNS.some(p => p.test(c.name || ''));
-          if (c.credits > 0 && (AU_C.EXCLUDED_GRADES.includes(g) || isFoundation)) {
-            exclusionNotes.push('<strong>' + _esc(c.name) + '</strong> is graded as \'' + c.grade + '\', which grants no quality points. Its ' + c.credits + ' credit hours count toward degree progress but are excluded from your SGPA.');
+          if (c.credits > 0) {
+            if (AU_C.FAILURE_GRADES.includes(g)) {
+              exclusionNotes.push('<strong>' + _esc(c.name) + '</strong> is graded as \'' + c.grade + '\'. According to university policy, you do not earn degree credits for failed courses, but its ' + c.credits + ' credit hours are still included in your GPA calculations (0 quality points).');
+            } else if (AU_C.EXCLUDED_GRADES.includes(g) || isFoundation) {
+              exclusionNotes.push('<strong>' + _esc(c.name) + '</strong> is graded as \'' + c.grade + '\', which grants no quality points. Its ' + c.credits + ' credit hours are excluded from your SGPA and do not count toward your degree progress (Earned Credits).');
+            }
           }
         }
       });
