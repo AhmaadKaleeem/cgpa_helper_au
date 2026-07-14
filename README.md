@@ -4,6 +4,7 @@ GradePilot is an open-source Chrome extension built for Air University students.
 
 Unlike manual GPA calculators, GradePilot automatically handles repeated courses, excludes non-credit subjects, and provides planning tools to help you make informed academic decisions.
 
+
 ---
 
 # Features

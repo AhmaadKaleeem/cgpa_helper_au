@@ -15,9 +15,10 @@
 
         <Border Grid.Row="2" Background="{DynamicResource BrushSurface}" CornerRadius="4" Padding="24">
             <StackPanel>
-                <TextBlock Style="{StaticResource TypographyBody}" Margin="0,0,0,16" TextWrapping="Wrap">
-                    Chrome did not open automatically, or it asked you to pick a profile. Open Chrome and type <Run FontWeight="SemiBold">chrome://extensions</Run> in the address bar.
+                <TextBlock Style="{StaticResource TypographyBody}" Margin="0,0,0,4" TextWrapping="Wrap">
+                    Chrome did not open automatically, or it asked you to pick a profile. Open Chrome and type this in the address bar:
                 </TextBlock>
+                <TextBox Text="chrome://extensions" Padding="0" IsReadOnly="True" BorderThickness="0" Background="Transparent" Style="{StaticResource TypographyBody}" FontWeight="SemiBold" Margin="0,0,0,16" />
                 <StackPanel Margin="0,0,0,24">
                     <TextBlock Style="{StaticResource TypographyBody}" Margin="0,0,0,12">
                         <Run FontWeight="SemiBold">1.</Run> Turn on <Run FontWeight="SemiBold">Developer Mode</Run> (top right corner of Chrome).
@@ -28,7 +29,7 @@
                     <TextBlock Style="{StaticResource TypographyBody}">
                         <Run FontWeight="SemiBold">3.</Run> Select <Run FontWeight="SemiBold">this exact folder</Run> (select the folder itself, not a file inside it):
                     </TextBlock>
-                    <TextBlock Style="{StaticResource TypographyCaption}" Foreground="{DynamicResource BrushPrimaryAction}" Margin="16,4,0,0" Text="{Binding InstallPath}" TextWrapping="Wrap" />
+                    <TextBox Text="{Binding InstallPath, Mode=OneWay}" Padding="0" IsReadOnly="True" BorderThickness="0" Background="Transparent" Style="{StaticResource TypographyCaption}" Foreground="{DynamicResource BrushPrimaryAction}" Margin="16,4,0,0" TextWrapping="Wrap" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Button Content="Open Folder" Command="{Binding OpenFolderCommand}" Style="{StaticResource StyleSecondaryButton}" Margin="0,0,12,0" />

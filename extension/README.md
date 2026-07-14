@@ -2,6 +2,7 @@
 
 GradePilot is an open-source Chrome extension built for Air University students. It reads your student portal grade report, applies official university retake rules, and calculates your true academic standing with complete privacy.
 
+
 ---
 
 # Features

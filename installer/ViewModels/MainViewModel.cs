@@ -143,18 +143,36 @@ namespace GradePilotInstaller.ViewModels
         }
 
         public bool ForceClose { get; set; } = false;
+        private bool _isConfirmingCancel = false;
 
         private void OnCancel(object? parameter)
         {
+            if (_isConfirmingCancel) return;
+            _isConfirmingCancel = true;
+            
             var viewModel = new ConfirmDialogViewModel("Stop installing GradePilot?");
             var dialog = new Views.ConfirmDialog(viewModel);
             
             viewModel.RequestClose = () => dialog.Close();
             
-            if (dialog.ShowDialog() == true && viewModel.Result == true)
+            try
             {
-                ForceClose = true;
-                System.Windows.Application.Current.Shutdown();
+                dialog.ShowDialog();
+                
+                if (viewModel.Result == true)
+                {
+                    ForceClose = true;
+                    System.Windows.Application.Current.Shutdown();
+                }
+                else
+                {
+                    _isConfirmingCancel = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.ToString());
+                _isConfirmingCancel = false;
             }
         }
 

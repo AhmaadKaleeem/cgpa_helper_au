@@ -130,7 +130,17 @@ Click the gear icon to open settings.
 
 ---
 
-## 7. Troubleshooting
+## 7. Uninstallation
+
+Since GradePilot is an unpacked extension, you can easily remove it without a dedicated uninstaller program:
+1. Open Chrome and go to `chrome://extensions`.
+2. Find GradePilot and click **Remove**.
+3. Delete the GradePilot installation folder from your computer (e.g., `%LOCALAPPDATA%\GradePilot` or your custom folder).
+4. If you created shortcuts on your Desktop or Start Menu, you can delete them.
+
+---
+
+## 8. Troubleshooting
 
 **The CGPA button does not appear.**  
 Make sure you are on the Grade Report page, not the portal homepage or another section. Reload the page and try again.

@@ -8,7 +8,6 @@ namespace GradePilotInstaller.Views
         {
             InitializeComponent();
             DataContext = viewModel;
-            Owner = Application.Current.MainWindow;
         }
     }
 }

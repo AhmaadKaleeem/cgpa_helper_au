@@ -57,8 +57,7 @@
                 Visibility="{Binding IsFooterVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Grid>
                 <Button Content="_Cancel" 
-                        AutomationProperties.Name="Cancel Installation"
-                        Command="{Binding CancelCommand}" 
+                        AutomationProperties.Name="Cancel Installation" 
                         Style="{StaticResource StyleSecondaryButton}" 
                         HorizontalAlignment="Left"
                         IsCancel="True" />
