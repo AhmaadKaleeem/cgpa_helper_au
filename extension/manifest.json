@@ -2,15 +2,21 @@
   "manifest_version": 3,
   "name": "AU GradePilot",
   "version": "1.0.0",
-  "description": "GradePilot is a Chrome extension that calculates your exact AU CGPA and lets you simulate retakes and plan semesters privately.",
-  "permissions": ["storage"],
-  "host_permissions": ["https://portals.au.edu.pk/*"],
+  "description": "GradePilot is a Chrome extension that helps you understand your actual CGPA, organize your retakes, and plan your academic future.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://portals.au.edu.pk/*"
+  ],
   "background": {
     "service_worker": "src/background.js"
   },
   "content_scripts": [
     {
-      "matches": ["https://portals.au.edu.pk/*"],
+      "matches": [
+        "https://portals.au.edu.pk/*"
+      ],
       "js": [
         "src/env.js",
         "src/analytics.js",
@@ -34,8 +40,13 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["src/styles.css", "icons/*"],
-      "matches": ["https://portals.au.edu.pk/*"]
+      "resources": [
+        "src/styles.css",
+        "icons/*"
+      ],
+      "matches": [
+        "https://portals.au.edu.pk/*"
+      ]
     }
   ],
   "icons": {
