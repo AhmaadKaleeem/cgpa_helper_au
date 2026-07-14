@@ -102,8 +102,21 @@ Write-Step "Running Inno Setup Bootstrapper..."
 if (Test-Path $releaseDir) { Remove-Item -Recurse -Force $releaseDir }
 New-Item -ItemType Directory -Path $releaseDir | Out-Null
 
-$isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
-if (-not (Test-Path $isccPath)) {
+$isccPaths = @(
+    "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe",
+    "C:\Program Files (x86)\Inno Setup 6\ISCC.exe",
+    "C:\Program Files\Inno Setup 6\ISCC.exe"
+)
+
+$isccPath = $null
+foreach ($path in $isccPaths) {
+    if (Test-Path $path) {
+        $isccPath = $path
+        break
+    }
+}
+
+if (-not $isccPath) {
     Write-WarningMsg "Inno Setup 6 not found. Skipping GradePilotSetup.exe generation."
 } else {
     $isccOutput = & $isccPath "bootstrapper.iss" 2>&1
