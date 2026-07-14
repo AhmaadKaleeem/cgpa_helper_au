@@ -1,0 +1,26 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Solid Colors -->
+    <Color x:Key="ColorWhite">#FFFFFF</Color>
+    <Color x:Key="ColorOffWhite">#FAFAFA</Color>
+    <Color x:Key="ColorBlack">#000000</Color>
+    <Color x:Key="ColorDarkGray">#333333</Color>
+    <Color x:Key="ColorGray">#666666</Color>
+    <Color x:Key="ColorLightGray">#EAEAEA</Color>
+    <Color x:Key="ColorFocusOutline">#000000</Color>
+    <Color x:Key="ColorTransparent">Transparent</Color>
+
+    <!-- Semantic Brushes -->
+    <SolidColorBrush x:Key="BrushBackground" Color="{StaticResource ColorWhite}" />
+    <SolidColorBrush x:Key="BrushSurface" Color="{StaticResource ColorOffWhite}" />
+    <SolidColorBrush x:Key="BrushTextPrimary" Color="{StaticResource ColorBlack}" />
+    <SolidColorBrush x:Key="BrushTextSecondary" Color="{StaticResource ColorGray}" />
+    <SolidColorBrush x:Key="BrushBorder" Color="{StaticResource ColorLightGray}" />
+    <SolidColorBrush x:Key="BrushPrimaryAction" Color="{StaticResource ColorBlack}" />
+    <SolidColorBrush x:Key="BrushPrimaryActionText" Color="{StaticResource ColorWhite}" />
+    <SolidColorBrush x:Key="BrushPrimaryActionHover" Color="{StaticResource ColorDarkGray}" />
+    <SolidColorBrush x:Key="BrushFocusOutline" Color="{StaticResource ColorFocusOutline}" />
+    <SolidColorBrush x:Key="BrushTransparent" Color="{StaticResource ColorTransparent}" />
+
+</ResourceDictionary>

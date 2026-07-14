@@ -3,6 +3,5 @@ node_modules/
 extension/src/env.js
 .agents/
 skills-lock.json
-installer/*
 scripts/*
 binaries/*

@@ -1,0 +1,25 @@
+<UserControl x:Class="GradePilotInstaller.Views.WelcomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="48">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Image Source="/Assets/logo.png" Width="64" Height="64" HorizontalAlignment="Left" Margin="0,0,0,32" />
+
+        <TextBlock Grid.Row="1" Text="Welcome to GradePilot" Style="{StaticResource TypographyH1}" />
+        
+        <TextBlock Grid.Row="2" Style="{StaticResource TypographyBody}">
+            This setup wizard will install GradePilot on your computer.<LineBreak/><LineBreak/>
+            GradePilot helps Air University students calculate their true academic standing and plan future semesters. Your grades stay completely private and never leave your browser.<LineBreak/><LineBreak/>
+            <Run FontWeight="SemiBold">About GradePilot</Run><LineBreak/>
+            Installer Version: <Run Text="{Binding InstallerVersion}" /><LineBreak/>
+            Extension Version: <Run Text="{Binding ExtensionVersion}" /><LineBreak/>
+            Build Date: <Run Text="{Binding BuildDate}" />
+        </TextBlock>
+    </Grid>
+</UserControl>

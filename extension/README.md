@@ -29,8 +29,8 @@ Developers can clone this repository directly.
 1. Run git clone https://github.com/AhmaadKaleeem/cgpa_helper_au.git to get the code.
 2. Follow the steps above to load the unpacked extension in Chrome. 
 
-Coming Soon Windows Setup Wizard
-We are building a dedicated Windows installer. Soon you will be able to download a standard executable file. You will double click the installer and it will automatically handle the folder creation and setup process for you. 
+Coming Soon Windows Setup Wizard and Winget
+We are building a dedicated Windows installer. Soon you will be able to download a standard executable file or install it directly via Winget. The installer will automatically handle the folder creation and setup process for you. 
 
 ## How It Works Under The Hood
 

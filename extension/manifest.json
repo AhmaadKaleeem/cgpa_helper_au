@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "AU GradePilot",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "description": "Production-grade GradePilot for Air University Student Portal. Dashboard, retake simulator, target planner, analytics and more.",
   "permissions": ["storage"],
   "host_permissions": ["https://portals.au.edu.pk/*"],

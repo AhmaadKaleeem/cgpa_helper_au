@@ -1,0 +1,49 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Typography Foundation -->
+    <FontFamily x:Key="FontFamilyPrimary">Segoe UI Variable, Segoe UI, Arial</FontFamily>
+
+    <Style x:Key="TypographyBase" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontFamilyPrimary}" />
+        <Setter Property="Foreground" Value="{DynamicResource BrushTextPrimary}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <!-- Headings -->
+    <Style x:Key="TypographyH1" BasedOn="{StaticResource TypographyBase}" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="28" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Margin" Value="0,0,0,16" />
+    </Style>
+
+    <Style x:Key="TypographyH2" BasedOn="{StaticResource TypographyBase}" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Margin" Value="0,0,0,12" />
+    </Style>
+
+    <!-- Subheadings -->
+    <Style x:Key="TypographySubheading" BasedOn="{StaticResource TypographyBase}" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="Regular" />
+        <Setter Property="Foreground" Value="{DynamicResource BrushTextSecondary}" />
+        <Setter Property="Margin" Value="0,0,0,24" />
+    </Style>
+
+    <!-- Body -->
+    <Style x:Key="TypographyBody" BasedOn="{StaticResource TypographyBase}" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Regular" />
+        <Setter Property="Margin" Value="0,0,0,8" />
+        <Setter Property="LineHeight" Value="20" />
+    </Style>
+
+    <!-- Caption/Small -->
+    <Style x:Key="TypographyCaption" BasedOn="{StaticResource TypographyBase}" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="Regular" />
+        <Setter Property="Foreground" Value="{DynamicResource BrushTextSecondary}" />
+    </Style>
+
+</ResourceDictionary>
