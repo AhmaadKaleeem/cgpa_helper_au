@@ -481,7 +481,7 @@
       const rows = sortedCourses.map(c => {
         if (AU_ENGINE.isCourseExcluded(c, _settings.manualExclusions || [])) return '';
         if (_searchTerm && !c.name.toLowerCase().includes(_searchTerm.toLowerCase())) return '';
-        return renderRow(c);
+        return _renderCourseRowSim(c, overrides);
       }).join('');
 
       if (!rows.trim()) return;
@@ -500,6 +500,53 @@
     html += _renderScenarios(dec);
 
     return html;
+  }
+
+  
+  function _renderCourseRowSim(c, overrides) {
+    const isOn = !!overrides[c.id];
+    const selOpts = _getGradeOpts().map(g => {
+      const sel = (isOn && overrides[c.id] === g) || (!isOn && c.normalizedGrade === g);
+      return '<option value="' + g + '"' + (sel ? ' selected' : '') + '>' + g + '</option>';
+    }).join('');
+
+    let statusBadge = '';
+    if (c.isRetakeReplaced) {
+      statusBadge = '<div style="font-size:10px; color:var(--text-tertiary); margin-top:2px;">Replaced (Excluded from CGPA)</div>';
+    } else if (c.isRetake) {
+      statusBadge = '<div style="font-size:10px; color:var(--info); margin-top:2px;">Retaken (Counts in CGPA)</div>';
+    }
+
+    return '<tr class="' + (isOn ? 'au-row--sim' : '') + '">' +
+      '<td><div style="font-weight:500;">' + _esc(c.name) + '</div>' + statusBadge + '</td>' +
+      '<td class="au-tc">' + (c.isRetakeReplaced ? '<span style="text-decoration:line-through;color:var(--text-tertiary);">' + c.credits + '</span>' : c.credits) + '</td>' +
+      '<td class="au-tc"><span class="au-grade-pill" style="background:' + _gradeColor(c.normalizedGrade) + '">' + _esc(c.grade) + '</span></td>' +
+      '<td class="au-tc"><label class="au-toggle"><input type="checkbox" class="au-retake-chk" data-id="' + c.id + '"' + (isOn ? ' checked' : '') + '><span></span></label></td>' +
+      '<td><select class="au-grade-sel au-select--sm" data-id="' + c.id + '"' + (!isOn ? ' disabled' : '') + '>' + selOpts + '</select></td>' +
+    '</tr>';
+  }
+
+  function _renderActiveSimsMenu(overrides, record, manualExcl) {
+    const activeSims = [];
+    record.semesters.forEach(sem => {
+      sem.courses.forEach(c => {
+        if (overrides[c.id] && !AU_ENGINE.isCourseExcluded(c, manualExcl)) {
+          activeSims.push(c);
+        }
+      });
+    });
+
+    if (activeSims.length > 0) {
+      activeSims.sort((a, b) => a.name.localeCompare(b.name));
+      const simRows = activeSims.map(c => _renderCourseRowSim(c, overrides)).join('');
+      return _section('Active Simulations',
+        '<table class="au-table" style="border: 2px solid var(--accent); border-radius: var(--radius-md);">' +
+          '<thead><tr><th>Course</th><th>Cr</th><th>Grade</th><th>Sim</th><th>New</th></tr></thead>' +
+          '<tbody>' + simRows + '</tbody>' +
+        '</table>'
+      );
+    }
+    return '';
   }
 
   function _renderScenarios(dec) {
@@ -974,6 +1021,34 @@
     if (_tab === 'simulate') _bindSimulate();
     if (_tab === 'plan')     _bindPlan();
     if (_tab === 'settings') _bindSettings();
+  }
+
+  
+  function _bindActiveSimsShared() {
+    _root.querySelectorAll('.au-retake-chk').forEach(chk => {
+      chk.addEventListener('change', () => {
+        const id  = chk.dataset.id;
+        const sel = _root.querySelector('.au-grade-sel[data-id="' + id + '"]');
+        if (chk.checked) {
+          sel.disabled = false;
+          AU_STORAGE.setOverride(id, sel.value);
+        } else {
+          sel.disabled = true;
+          AU_STORAGE.setOverride(id, null);
+        }
+        _refreshComputed();
+        _render();
+      });
+    });
+
+    _root.querySelectorAll('.au-grade-sel').forEach(sel => {
+      sel.addEventListener('change', () => {
+        const id = sel.dataset.id;
+        AU_STORAGE.setOverride(id, sel.value);
+        _refreshComputed();
+        _render();
+      });
+    });
   }
 
   function _bindSimulate() {
