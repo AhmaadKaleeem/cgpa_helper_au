@@ -99,8 +99,9 @@ Write-Success "WPF Compilation Successful"
 
 # 6. Run Inno Setup Bootstrapper
 Write-Step "Running Inno Setup Bootstrapper..."
-if (Test-Path $releaseDir) { Remove-Item -Recurse -Force $releaseDir }
-New-Item -ItemType Directory -Path $releaseDir | Out-Null
+Stop-Process -Name "GradePilotSetup" -Force -ErrorAction SilentlyContinue
+if (Test-Path $releaseDir) { Remove-Item -Recurse -Force $releaseDir -ErrorAction SilentlyContinue }
+if (-not (Test-Path $releaseDir)) { New-Item -ItemType Directory -Path $releaseDir | Out-Null }
 
 $isccPaths = @(
     "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe",

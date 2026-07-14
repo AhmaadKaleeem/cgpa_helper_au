@@ -6,7 +6,7 @@
 AppName={#AppName}
 AppVersion={#AppVersion}
 AppPublisher={#Publisher}
-DefaultDirName={autotemp}\GradePilotInstallerTemp
+DefaultDirName={tmp}\GradePilotInstallerTemp
 DisableDirPage=yes
 DisableProgramGroupPage=yes
 DisableReadyPage=yes
