@@ -15,39 +15,46 @@ namespace GradePilotInstaller.Services
         {
             chromePath = string.Empty;
 
-            // 1. Check Registry (Most reliable for actual installs)
-            using (var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Clients\StartMenuInternet\Google Chrome\shell\open\command"))
+            try
             {
-                if (key != null)
+                // 1. Check Registry (Most reliable for actual installs)
+                using (var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Clients\StartMenuInternet\Google Chrome\shell\open\command"))
                 {
-                    var val = key.GetValue(null) as string;
-                    if (!string.IsNullOrEmpty(val))
+                    if (key != null)
                     {
-                        var cleanPath = val.Trim('"');
-                        if (File.Exists(cleanPath))
+                        var val = key.GetValue(null) as string;
+                        if (!string.IsNullOrEmpty(val))
                         {
-                            chromePath = cleanPath;
-                            return true;
+                            var cleanPath = val.Trim('"');
+                            if (File.Exists(cleanPath))
+                            {
+                                chromePath = cleanPath;
+                                return true;
+                            }
                         }
                     }
                 }
-            }
 
-            // 2. Check Standard Paths
-            var standardPaths = new[]
-            {
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), @"Google\Chrome\Application\chrome.exe"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Google\Chrome\Application\chrome.exe"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Google\Chrome\Application\chrome.exe")
-            };
-
-            foreach (var path in standardPaths)
-            {
-                if (File.Exists(path))
+                // 2. Check Standard Paths
+                var standardPaths = new[]
                 {
-                    chromePath = path;
-                    return true;
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), @"Google\Chrome\Application\chrome.exe"),
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Google\Chrome\Application\chrome.exe"),
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Google\Chrome\Application\chrome.exe")
+                };
+
+                foreach (var path in standardPaths)
+                {
+                    if (File.Exists(path))
+                    {
+                        chromePath = path;
+                        return true;
+                    }
                 }
+            }
+            catch
+            {
+                // Ignore any registry or IO exceptions
             }
 
             return false;

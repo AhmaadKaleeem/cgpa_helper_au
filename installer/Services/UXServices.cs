@@ -56,13 +56,20 @@ namespace GradePilotInstaller.Services
         {
             if (_chromeDetectionService.TryFindChrome(out string chromePath))
             {
-                Process.Start(new ProcessStartInfo
+                try
                 {
-                    FileName = chromePath,
-                    Arguments = "chrome://extensions",
-                    UseShellExecute = true
-                });
-                return true;
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = chromePath,
+                        Arguments = "chrome://extensions",
+                        UseShellExecute = true
+                    });
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
             }
             return false;
         }

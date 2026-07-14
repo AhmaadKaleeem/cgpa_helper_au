@@ -52,7 +52,7 @@
                                     Click="ReportBug_Click"
                                     Style="{StaticResource StyleSecondaryButton}" />
                         </StackPanel>
-                        <TextBox Text="ahmadkaleeem1@gmail.com" Padding="0" IsReadOnly="True" BorderThickness="0" Background="Transparent" Style="{StaticResource TypographyCaption}" Foreground="{DynamicResource BrushTextSecondary}" TextWrapping="Wrap" />
+                        <TextBox Text="ahmadkaleeem1@gmail.com" Padding="0" IsReadOnly="True" BorderThickness="0" Background="Transparent" FontSize="12" Foreground="{DynamicResource BrushTextSecondary}" TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>
 

@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,6 +15,7 @@ namespace GradePilotInstaller
 
         public App()
         {
+
             _host = Host.CreateDefaultBuilder()
                 .ConfigureLogging((context, logging) =>
                 {
