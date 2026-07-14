@@ -150,5 +150,19 @@ namespace GradePilotInstaller.Services
                 }
             }
         }
+
+        private void CopyIcon()
+        {
+            var sourceIco = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "logo.ico");
+            if (File.Exists(sourceIco))
+            {
+                File.Copy(sourceIco, _pathService.InstalledIcoPath, overwrite: true);
+                _logger.LogInformation("Icon copied to {IconPath}", _pathService.InstalledIcoPath);
+            }
+            else
+            {
+                _logger.LogWarning("Source icon not found at {SourcePath} — shortcut will use default icon.", sourceIco);
+            }
+        }
     }
 }

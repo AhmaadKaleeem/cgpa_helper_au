@@ -69,13 +69,16 @@ namespace GradePilotInstaller.ViewModels
             string extensionDir = _pathService.ExtensionDirectory;
             bool filesExist = Directory.Exists(extensionDir) && File.Exists(Path.Combine(extensionDir, "manifest.json"));
 
+            // Use the installed icon if it was copied; fall back gracefully if missing
+            string iconPath = File.Exists(_pathService.InstalledIcoPath) ? _pathService.InstalledIcoPath : string.Empty;
+
             if (filesExist)
             {
                 if (CreateDesktopShortcut)
                 {
                     var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
                     var linkPath = Path.Combine(desktopDir, "GradePilot.lnk");
-                    CreateShortcut(linkPath, extensionDir);
+                    CreateShortcut(linkPath, extensionDir, iconPath);
                 }
 
                 if (CreateStartMenuShortcut)
@@ -83,20 +86,25 @@ namespace GradePilotInstaller.ViewModels
                     var startMenuDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), "Programs", "GradePilot");
                     Directory.CreateDirectory(startMenuDir);
                     var linkPath = Path.Combine(startMenuDir, "GradePilot.lnk");
-                    CreateShortcut(linkPath, extensionDir);
+                    CreateShortcut(linkPath, extensionDir, iconPath);
                 }
             }
 
             System.Windows.Application.Current.Shutdown();
         }
 
-        private void CreateShortcut(string shortcutPath, string targetPath)
+        private void CreateShortcut(string shortcutPath, string targetPath, string iconPath = "")
         {
             try
             {
+                // Build the icon assignment segment only when an icon file exists
+                string iconLine = string.IsNullOrEmpty(iconPath)
+                    ? string.Empty
+                    : $"$s.IconLocation = '{iconPath},0'; ";
+
                 var p = new Process();
                 p.StartInfo.FileName = "powershell.exe";
-                p.StartInfo.Arguments = $"-NoProfile -WindowStyle Hidden -Command \"$wshell = New-Object -ComObject WScript.Shell; $s = $wshell.CreateShortcut('{shortcutPath}'); $s.TargetPath = '{targetPath}'; $s.Save()\"";
+                p.StartInfo.Arguments = $"-NoProfile -WindowStyle Hidden -Command \"$wshell = New-Object -ComObject WScript.Shell; $s = $wshell.CreateShortcut('{shortcutPath}'); $s.TargetPath = '{targetPath}'; {iconLine}$s.Save()\"";
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.CreateNoWindow = true;
                 p.Start();
