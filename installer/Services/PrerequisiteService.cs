@@ -33,11 +33,11 @@ namespace GradePilotInstaller.Services
                 return false;
             }
 
-            // 3. Check Archive Exists (Mocking standard path for bundled archive)
-            string archivePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "extension.zip");
+            // 3. Check Archive Exists
+            string archivePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "extension.zip");
             if (!File.Exists(archivePath))
             {
-                errorMessage = "The installation package is missing the extension archive. Please download the installer again.";
+                errorMessage = $"The installation package is missing the extension archive (expected at: {archivePath}). Please download the installer again.";
                 return false;
             }
 

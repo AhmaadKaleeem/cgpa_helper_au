@@ -11,6 +11,8 @@ namespace GradePilotInstaller.ViewModels
         private readonly IPathService _pathService;
         private bool _createDesktopShortcut = true;
         private bool _createStartMenuShortcut = true;
+        private bool _installationSucceeded = false;
+        private string _statusMessage = "GradePilot has been installed successfully.";
 
         public bool CreateDesktopShortcut
         {
@@ -24,6 +26,18 @@ namespace GradePilotInstaller.ViewModels
             set => SetProperty(ref _createStartMenuShortcut, value);
         }
 
+        public bool InstallationSucceeded
+        {
+            get => _installationSucceeded;
+            set => SetProperty(ref _installationSucceeded, value);
+        }
+
+        public string StatusMessage
+        {
+            get => _statusMessage;
+            set => SetProperty(ref _statusMessage, value);
+        }
+
         public ICommand FinishCommand { get; }
 
         public FinishViewModel(IPathService pathService)
@@ -32,21 +46,45 @@ namespace GradePilotInstaller.ViewModels
             FinishCommand = new RelayCommand(OnFinish);
         }
 
+        /// <summary>
+        /// Called by MainViewModel after successful installation. 
+        /// Only creates shortcuts when the extension directory is confirmed to exist.
+        /// </summary>
+        public void MarkInstallationSuccess()
+        {
+            string manifestPath = Path.Combine(_pathService.ExtensionDirectory, "manifest.json");
+            InstallationSucceeded = File.Exists(manifestPath);
+
+            if (!InstallationSucceeded)
+            {
+                StatusMessage = "Installation encountered an error. The extension files could not be verified.";
+                CreateDesktopShortcut = false;
+                CreateStartMenuShortcut = false;
+            }
+        }
+
         private void OnFinish(object? parameter)
         {
-            if (CreateDesktopShortcut)
-            {
-                var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-                var linkPath = Path.Combine(desktopDir, "GradePilot.lnk");
-                CreateShortcut(linkPath, _pathService.ExtensionDirectory);
-            }
+            // Only create shortcuts if we know the files actually exist
+            string extensionDir = _pathService.ExtensionDirectory;
+            bool filesExist = Directory.Exists(extensionDir) && File.Exists(Path.Combine(extensionDir, "manifest.json"));
 
-            if (CreateStartMenuShortcut)
+            if (filesExist)
             {
-                var startMenuDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), "Programs", "GradePilot");
-                Directory.CreateDirectory(startMenuDir);
-                var linkPath = Path.Combine(startMenuDir, "GradePilot.lnk");
-                CreateShortcut(linkPath, _pathService.ExtensionDirectory);
+                if (CreateDesktopShortcut)
+                {
+                    var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+                    var linkPath = Path.Combine(desktopDir, "GradePilot.lnk");
+                    CreateShortcut(linkPath, extensionDir);
+                }
+
+                if (CreateStartMenuShortcut)
+                {
+                    var startMenuDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), "Programs", "GradePilot");
+                    Directory.CreateDirectory(startMenuDir);
+                    var linkPath = Path.Combine(startMenuDir, "GradePilot.lnk");
+                    CreateShortcut(linkPath, extensionDir);
+                }
             }
 
             System.Windows.Application.Current.Shutdown();

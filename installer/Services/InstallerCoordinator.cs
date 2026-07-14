@@ -71,6 +71,9 @@ namespace GradePilotInstaller.Services
                 // 5. Copy Legal Docs
                 CopyLegalDocuments();
 
+                // 6. Copy icon to install root so shortcuts can reference a stable path
+                CopyIcon();
+
                 _logger.LogInformation("Installation completed successfully.");
                 return new InstallationResult
                 {

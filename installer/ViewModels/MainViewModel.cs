@@ -84,10 +84,16 @@ namespace GradePilotInstaller.ViewModels
 
                 if (_steps[_currentIndex] is InstallingViewModel installingViewModel)
                 {
-                    _ = installingViewModel.StartInstallationAsync(() =>
+                    _ = installingViewModel.StartInstallationAsync((success) =>
                     {
-                        // Auto-advance to next screen on completion
-                        System.Windows.Application.Current.Dispatcher.Invoke(() => OnNext(null));
+                        System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            if (success)
+                            {
+                                OnNext(null);
+                            }
+                            // On failure, we stay on the Installing screen showing the error
+                        });
                     });
                 }
             }
@@ -163,6 +169,11 @@ namespace GradePilotInstaller.ViewModels
                 {
                     chromeSetup.OpenChromeCommand.Execute(null);
                 }
+            }
+
+            if (CurrentView is FinishViewModel finishVm)
+            {
+                finishVm.MarkInstallationSuccess();
             }
         }
     }

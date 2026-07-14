@@ -13,6 +13,7 @@ namespace GradePilotInstaller.Services
         string LegalDirectory { get; }
         string SettingsFile { get; }
         string LogFile { get; }
+        string InstalledIcoPath { get; }
     }
 
     public class PathService : IPathService
@@ -29,6 +30,7 @@ namespace GradePilotInstaller.Services
         public string CacheDirectory => Path.Combine(InstallRoot, "cache");
         public string LogDirectory => Path.Combine(InstallRoot, "logs");
         public string LegalDirectory => Path.Combine(InstallRoot, "Legal");
+        public string InstalledIcoPath => Path.Combine(InstallRoot, "logo.ico");
         
         public string SettingsFile => Path.Combine(ConfigDirectory, "settings.json");
         public string LogFile => Path.Combine(LogDirectory, "install.log");
