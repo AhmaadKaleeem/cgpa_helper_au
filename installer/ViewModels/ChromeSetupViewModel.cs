@@ -13,6 +13,8 @@ namespace GradePilotInstaller.ViewModels
         public ICommand OpenFolderCommand { get; }
         public ICommand CopyPathCommand { get; }
         public ICommand OpenChromeCommand { get; }
+        
+        public string InstallPath => _pathService.ExtensionDirectory;
 
         public ChromeSetupViewModel(
             IChromeLaunchService chromeLaunchService,

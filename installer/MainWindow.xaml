@@ -8,12 +8,14 @@
         mc:Ignorable="d"
         Title="GradePilot Setup" 
         MinWidth="600" MinHeight="450" 
-        Width="720" Height="500"
+        Width="720" Height="600"
         WindowStartupLocation="CenterScreen"
+        Icon="/Assets/logo.ico"
         Background="{DynamicResource BrushBackground}"
         FontFamily="{StaticResource FontFamilyPrimary}">
         
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <DataTemplate DataType="{x:Type viewmodels:SplashViewModel}">
             <views:SplashView />
         </DataTemplate>
@@ -51,20 +53,24 @@
                 Background="{DynamicResource BrushSurface}" 
                 BorderBrush="{DynamicResource BrushBorder}" 
                 BorderThickness="0,1,0,0" 
-                Padding="24,16">
+                Padding="24,16"
+                Visibility="{Binding IsFooterVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Grid>
-                <Button Content="Cancel" 
+                <Button Content="_Cancel" 
+                        AutomationProperties.Name="Cancel Installation"
                         Command="{Binding CancelCommand}" 
                         Style="{StaticResource StyleSecondaryButton}" 
                         HorizontalAlignment="Left"
                         IsCancel="True" />
                         
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="Back" 
+                    <Button Content="_Back" 
+                            AutomationProperties.Name="Go Back"
                             Command="{Binding BackCommand}" 
                             Style="{StaticResource StyleSecondaryButton}" 
                             Margin="0,0,12,0" />
-                    <Button Content="Next" 
+                    <Button Content="_Next" 
+                            AutomationProperties.Name="Go to Next Step"
                             Command="{Binding NextCommand}" 
                             Style="{StaticResource StylePrimaryButton}" 
                             IsDefault="True" />

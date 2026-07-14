@@ -5,7 +5,7 @@ namespace GradePilotInstaller.Services
 {
     public interface IPathService
     {
-        string InstallRoot { get; }
+        string InstallRoot { get; set; }
         string ExtensionDirectory { get; }
         string ConfigDirectory { get; }
         string CacheDirectory { get; }
@@ -17,7 +17,7 @@ namespace GradePilotInstaller.Services
 
     public class PathService : IPathService
     {
-        public string InstallRoot { get; }
+        public string InstallRoot { get; set; }
 
         public PathService()
         {

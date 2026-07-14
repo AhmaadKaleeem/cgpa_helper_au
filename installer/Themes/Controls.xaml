@@ -19,11 +19,14 @@
                                     BorderBrush="{DynamicResource BrushBorder}"
                                     BorderThickness="1">
                                 <Path x:Name="CheckMark"
-                                      Width="10" Height="10" 
+                                      Width="14" Height="14" 
                                       SnapsToDevicePixels="False" 
                                       Stroke="{DynamicResource BrushWhite}"
-                                      StrokeThickness="2"
-                                      Data="M 2 5 L 4 7 L 8 2"
+                                      StrokeThickness="2.5"
+                                      StrokeStartLineCap="Round"
+                                      StrokeEndLineCap="Round"
+                                      StrokeLineJoin="Round"
+                                      Data="M 3,7 L 6,10 L 11,3"
                                       Visibility="Collapsed" />
                             </Border>
                         </BulletDecorator.Bullet>
@@ -52,7 +55,7 @@
 
     <!-- Restyled ProgressBar -->
     <Style TargetType="ProgressBar">
-        <Setter Property="Height" Value="6" />
+        <Setter Property="Height" Value="12" />
         <Setter Property="Background" Value="{DynamicResource BrushBorder}" />
         <Setter Property="Foreground" Value="{DynamicResource BrushPrimaryAction}" />
         <Setter Property="BorderThickness" Value="0" />
@@ -60,10 +63,10 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ProgressBar">
                     <Grid>
-                        <Border Background="{TemplateBinding Background}" CornerRadius="3" />
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6" />
                         <Border x:Name="PART_Indicator" 
                                 Background="{TemplateBinding Foreground}" 
-                                CornerRadius="3" 
+                                CornerRadius="6" 
                                 HorizontalAlignment="Left" />
                         <Border x:Name="PART_Track" />
                     </Grid>

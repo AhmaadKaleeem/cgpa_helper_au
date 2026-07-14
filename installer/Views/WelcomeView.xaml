@@ -1,25 +1,58 @@
 <UserControl x:Class="GradePilotInstaller.Views.WelcomeView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid Margin="48">
+    <Grid Margin="40">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Image Source="/Assets/logo.png" Width="64" Height="64" HorizontalAlignment="Left" Margin="0,0,0,32" />
 
-        <TextBlock Grid.Row="1" Text="Welcome to GradePilot" Style="{StaticResource TypographyH1}" />
+        <TextBlock Grid.Row="1" Text="Welcome to GradePilot" Style="{StaticResource TypographyH1}" Margin="0,0,0,16" />
         
-        <TextBlock Grid.Row="2" Style="{StaticResource TypographyBody}">
-            This setup wizard will install GradePilot on your computer.<LineBreak/><LineBreak/>
-            GradePilot helps Air University students calculate their true academic standing and plan future semesters. Your grades stay completely private and never leave your browser.<LineBreak/><LineBreak/>
-            <Run FontWeight="SemiBold">About GradePilot</Run><LineBreak/>
-            Installer Version: <Run Text="{Binding InstallerVersion}" /><LineBreak/>
-            Extension Version: <Run Text="{Binding ExtensionVersion}" /><LineBreak/>
-            Build Date: <Run Text="{Binding BuildDate}" />
-        </TextBlock>
+        <Grid Grid.Row="2" Margin="0,0,0,24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <TextBlock Grid.Row="0" Style="{StaticResource TypographyBody}" TextWrapping="Wrap" Margin="0,0,0,16">
+                This setup wizard will install GradePilot on your computer.
+            </TextBlock>
+            
+            <TextBlock Grid.Row="1" Style="{StaticResource TypographyBody}" TextWrapping="Wrap" Margin="0,0,0,24">
+                GradePilot helps Air University students calculate their true academic standing and plan future semesters. Your grades stay completely private and never leave your browser.
+            </TextBlock>
+            
+            <StackPanel Grid.Row="2">
+                <TextBlock Style="{StaticResource TypographyBody}" FontWeight="SemiBold" Margin="0,0,0,12">
+                    About GradePilot
+                </TextBlock>
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Installer Version:" Style="{StaticResource TypographyCaption}" Foreground="{DynamicResource BrushTextSecondary}" Margin="0,0,16,4" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding InstallerVersion, FallbackValue='1.0.0'}" Style="{StaticResource TypographyCaption}" FontWeight="Medium" Foreground="{DynamicResource BrushPrimaryAction}" Margin="0,0,0,4" />
+                    
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Extension Version:" Style="{StaticResource TypographyCaption}" Foreground="{DynamicResource BrushTextSecondary}" Margin="0,0,16,4" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ExtensionVersion, FallbackValue='1.0.0'}" Style="{StaticResource TypographyCaption}" FontWeight="Medium" Foreground="{DynamicResource BrushPrimaryAction}" Margin="0,0,0,4" />
+                    
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Build Date:" Style="{StaticResource TypographyCaption}" Foreground="{DynamicResource BrushTextSecondary}" />
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding BuildDate, FallbackValue='2026-07'}" Style="{StaticResource TypographyCaption}" FontWeight="Medium" Foreground="{DynamicResource BrushPrimaryAction}" />
+                </Grid>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

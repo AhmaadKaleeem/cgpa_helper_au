@@ -82,6 +82,20 @@ namespace GradePilotInstaller.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Installation failed with an unexpected error.");
+                
+                try
+                {
+                    if (Directory.Exists(_pathService.InstallRoot))
+                    {
+                        Directory.Delete(_pathService.InstallRoot, true);
+                        _logger.LogInformation("Rollback completed: installation directory removed.");
+                    }
+                }
+                catch (Exception rbEx)
+                {
+                    _logger.LogError(rbEx, "Rollback failed.");
+                }
+
                 return new InstallationResult
                 {
                     Success = false,

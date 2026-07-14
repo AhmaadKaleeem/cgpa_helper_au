@@ -1,7 +1,7 @@
 <UserControl x:Class="GradePilotInstaller.Views.DirectoryView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid Margin="48,32">
+    <Grid Margin="40">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -29,9 +29,9 @@
                      FontFamily="{StaticResource FontFamilyPrimary}" 
                      FontSize="14" />
                      
-            <Button Grid.Column="2" Content="Browse" Style="{StaticResource StyleSecondaryButton}" MinWidth="80" />
+            <Button Grid.Column="2" Content="Browse" Command="{Binding BrowseCommand}" Style="{StaticResource StyleSecondaryButton}" MinWidth="80" />
         </Grid>
 
-        <TextBlock Grid.Row="3" Text="Space required 15 MB" Style="{StaticResource TypographyCaption}" Margin="0,0,0,24" />
+        <TextBlock Grid.Row="3" Text="{Binding SpaceText}" Style="{StaticResource TypographyCaption}" Margin="0,0,0,24" />
     </Grid>
 </UserControl>

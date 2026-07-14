@@ -13,6 +13,16 @@ namespace GradePilotInstaller.ViewModels
 
         public BaseViewModel CurrentView => _navigationService.CurrentView;
 
+        public bool IsFooterVisible
+        {
+            get
+            {
+                return !(CurrentView is SplashViewModel || 
+                         CurrentView is InstallingViewModel || 
+                         CurrentView is FinishViewModel);
+            }
+        }
+
         public ICommand NextCommand { get; }
         public ICommand BackCommand { get; }
         public ICommand CancelCommand { get; }
@@ -32,7 +42,6 @@ namespace GradePilotInstaller.ViewModels
 
             _steps = new List<BaseViewModel>
             {
-                splash,
                 welcome,
                 terms,
                 directory,
@@ -43,10 +52,26 @@ namespace GradePilotInstaller.ViewModels
 
             NextCommand = new RelayCommand(OnNext, CanNext);
             BackCommand = new RelayCommand(OnBack, CanBack);
-            CancelCommand = new RelayCommand(o => System.Windows.Application.Current.Shutdown());
+            CancelCommand = new RelayCommand(OnCancel);
 
-            // Start at the first step
-            _navigationService.NavigateTo(_steps[_currentIndex]);
+            // Show splash screen first, then navigate to welcome
+            _navigationService.NavigateTo(splash);
+
+            // Auto-advance from splash after animation completes
+            _ = AutoAdvanceFromSplashAsync();
+        }
+
+        private async System.Threading.Tasks.Task AutoAdvanceFromSplashAsync()
+        {
+            await System.Threading.Tasks.Task.Delay(3000); // Wait for the progress bar animation
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                if (CurrentView is SplashViewModel)
+                {
+                    _navigationService.NavigateTo(_steps[0]); // Navigate to welcome screen
+                    CommandManager.InvalidateRequerySuggested();
+                }
+            });
         }
 
         private void OnNext(object? parameter)
@@ -75,6 +100,10 @@ namespace GradePilotInstaller.ViewModels
             {
                 return termsViewModel.AcceptedTerms;
             }
+            if (CurrentView is DirectoryViewModel dirViewModel)
+            {
+                return dirViewModel.HasSufficientSpace;
+            }
             return _currentIndex < _steps.Count - 1;
         }
 
@@ -83,6 +112,13 @@ namespace GradePilotInstaller.ViewModels
             if (_currentIndex > 0)
             {
                 _currentIndex--;
+                
+                // Skip the installing screen when going back
+                if (_steps[_currentIndex] is InstallingViewModel)
+                {
+                    _currentIndex--;
+                }
+                
                 _navigationService.NavigateTo(_steps[_currentIndex]);
                 CommandManager.InvalidateRequerySuggested();
             }
@@ -90,9 +126,9 @@ namespace GradePilotInstaller.ViewModels
 
         private bool CanBack(object? parameter)
         {
-            // Disallow going back from certain screens (e.g., Splash, Installing, Finish)
-            if (CurrentView is SplashViewModel || 
-                CurrentView is InstallingViewModel || 
+            // Disallow going back from certain screens where it doesn't make sense
+            // (e.g., during or after installation)
+            if (CurrentView is InstallingViewModel || 
                 CurrentView is FinishViewModel)
             {
                 return false;
@@ -100,9 +136,34 @@ namespace GradePilotInstaller.ViewModels
             return _currentIndex > 0;
         }
 
+        public bool ForceClose { get; set; } = false;
+
+        private void OnCancel(object? parameter)
+        {
+            var viewModel = new ConfirmDialogViewModel("Stop installing GradePilot?");
+            var dialog = new Views.ConfirmDialog(viewModel);
+            
+            viewModel.RequestClose = () => dialog.Close();
+            
+            if (dialog.ShowDialog() == true && viewModel.Result == true)
+            {
+                ForceClose = true;
+                System.Windows.Application.Current.Shutdown();
+            }
+        }
+
         private void OnCurrentViewChanged()
         {
             OnPropertyChanged(nameof(CurrentView));
+            OnPropertyChanged(nameof(IsFooterVisible));
+
+            if (CurrentView is ChromeSetupViewModel chromeSetup)
+            {
+                if (chromeSetup.OpenChromeCommand.CanExecute(null))
+                {
+                    chromeSetup.OpenChromeCommand.Execute(null);
+                }
+            }
         }
     }
 }

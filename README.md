@@ -1,89 +1,84 @@
-<div align="center">
-
 # GradePilot
 
-**An Academic Assistant for Air University Students**
+GradePilot is an academic assistant designed for Air University students. It integrates with the student portal to calculate grade point averages and simulate academic progress.
 
-[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)]()
-[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Chrome-lightgrey.svg)]()
-[![Privacy](https://img.shields.io/badge/Privacy-100%25%20Local-success.svg)]()
-
-*Developed by Ahmad Kaleem*
-
-</div>
-
----
+Developed by Ahmad Kaleem.
 
 ## Overview
 
-Calculating grade point averages manually or predicting how a retake will impact academic standing can be error-prone. 
+Calculating grade point averages manually or predicting how a retake will impact academic standing can be tedious. GradePilot is a Chrome extension that processes your grade reports directly in the browser to calculate Semester and Cumulative GPAs, and provides tools for academic planning.
 
-GradePilot is a Chrome Extension that integrates with the Air University student portal. It parses grade reports to calculate Semester and Cumulative GPAs and provides simulation tools for academic planning.
+### Core Functions
 
-### Features
+* Academic Standing: View your calculated Semester GPA and Cumulative GPA.
+* Retake Simulator: Apply official university retake rules to see potential CGPA changes.
+* Target Planner: Calculate the exact grades required in the current semester to reach a target CGPA.
+* Privacy: GradePilot runs entirely on your local machine. Your data is never sent to external servers.
 
-- **Academic Standing:** View your calculated SGPA and CGPA.
-- **Retake Simulator:** Apply official university retake rules to calculate potential CGPA changes.
-- **Target Planner:** Calculate the exact grades required in the current semester to reach a target CGPA.
-- **Privacy:** GradePilot runs locally within your browser. Data is not sent to external servers.
+## Installation Methods
 
----
+To use GradePilot, you must be using Google Chrome. The extension files are installed to your local application data directory.
+
+Choose one of the four methods below to install GradePilot:
+
+### 1. Winget
+
+Open PowerShell as an Administrator and run:
+
+```powershell
+winget install GradePilot
+```
+
+### 2. Windows Installer
+
+1. Download GradePilotSetup.exe from the repository.
+2. Run the installer (Administrator privileges recommended).
+3. Follow the setup wizard instructions.
+
+### 3. ZIP Archive
+
+1. Download the extension ZIP file from the repository.
+2. Extract the contents to a folder on your computer.
+3. Open Google Chrome and navigate to chrome://extensions.
+4. Enable Developer Mode.
+5. Click "Load unpacked" and select the extracted folder.
+
+### 4. PowerShell Script
+
+1. Download the installation script.
+2. Open PowerShell and run:
+
+```powershell
+.\install.ps1
+```
+
+## System Requirements
+
+* Operating System: Windows 10 (Version 1809) or newer.
+* Browser: Google Chrome.
 
 ## Technical Architecture
 
-GradePilot consists of a web extension and a Windows desktop installer.
+GradePilot is composed of a web extension and a Windows desktop installer.
 
-### The Chrome Extension
-- **Core:** Vanilla JavaScript (ES6+), HTML5, and CSS3.
-- **Architecture:** Modular, event-driven design (`eventBus.js`, `engine.js`, `optimizer.js`).
-- **Standard:** Complies with Chrome Extension Manifest V3.
+The Chrome extension uses standard JavaScript, HTML, and CSS, and complies with Chrome Extension Manifest V3. Its architecture uses a modular, event-driven design.
 
-### The Windows Installer
-A standalone desktop application to install the extension files.
-- **Core:** C# and .NET 8.
-- **Architecture:** Model-View-ViewModel (MVVM) pattern using Windows Presentation Foundation (WPF).
-- **Dependency Injection:** Utilizes `Microsoft.Extensions.Hosting` and `Microsoft.Extensions.Logging`.
-- **Extraction:** Extracts the extension payload using `ZipArchive` streams with UI progress updates.
-
-### Release Pipeline
-An automated build and packaging workflow.
-- **`release.ps1`**: A PowerShell script that compiles the extension, updates manifest versions, builds the .NET application, and triggers Inno Setup.
-- **Bootstrapper:** Inno Setup (`bootstrapper.iss`) is used to extract the WPF application to a temporary directory.
-- **Winget:** YAML manifests (`GradePilot.yaml`, `installer.yaml`) are provided for the Windows Package Manager.
-
----
-
-## Installation
-
-### Option 1: Winget
-Open PowerShell and run:
-```powershell
-winget install AirUniversity.GradePilot
-```
-
-### Option 2: Standalone Installer
-1. Navigate to the **Releases** tab on GitHub.
-2. Download `GradePilotSetup.exe`.
-3. Run the installer and follow the setup wizard.
-4. When prompted, Google Chrome will open. Enable **Developer Mode** and select the extracted extension folder.
-
----
+The Windows installer is a standalone desktop application built with C# and .NET 8, using the Windows Presentation Foundation (WPF) framework. It extracts the extension payload using ZipArchive streams and guides the user through the setup process.
 
 ## Developer Setup
 
-1. **Clone the repository:**
-   ```powershell
-   git clone https://github.com/AhmaadKaleeem/cgpa_helper_au.git
-   ```
-2. **Run the Release Pipeline:**
-   ```powershell
-   cd installer
-   .\release.ps1
-   ```
-   *The pipeline will zip the extension, compile the C# WPF installer, and output the artifacts into the `installer/Release/` directory.*
+To build the installer and package the extension from source:
+
+1. Clone the repository.
+2. Open PowerShell and navigate to the installer directory.
+3. Run the release pipeline:
+
+```powershell
+.\release.ps1
+```
+
+The pipeline will compress the extension, compile the C# WPF installer, and output the finalized artifacts.
 
 ---
 
-<div align="center">
-  <i>GradePilot is an independent, open-source educational tool and is not affiliated with Air University.</i>
-</div>
+GradePilot is an independent educational tool and is not affiliated with Air University.

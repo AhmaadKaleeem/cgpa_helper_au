@@ -31,6 +31,12 @@ namespace GradePilotInstaller.ViewModels
 
         public WelcomeViewModel()
         {
+            // Set default values first
+            InstallerVersion = "1.0.0";
+            ExtensionVersion = "1.0.0";
+            BuildDate = "2026-07-14";
+            
+            // Try to load from manifest
             LoadManifest();
         }
 
@@ -42,7 +48,11 @@ namespace GradePilotInstaller.ViewModels
                 if (File.Exists(manifestPath))
                 {
                     var json = File.ReadAllText(manifestPath);
-                    var manifest = JsonSerializer.Deserialize<InstallerManifest>(json);
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    var manifest = JsonSerializer.Deserialize<InstallerManifest>(json, options);
                     if (manifest != null)
                     {
                         InstallerVersion = manifest.InstallerVersion;
@@ -56,6 +66,7 @@ namespace GradePilotInstaller.ViewModels
                 // Fallback to defaults
                 InstallerVersion = "1.0.0";
                 ExtensionVersion = "1.0.0";
+                BuildDate = "2026-07-14";
             }
         }
     }

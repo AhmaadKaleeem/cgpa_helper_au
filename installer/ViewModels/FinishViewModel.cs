@@ -1,14 +1,70 @@
+using System;
+using System.IO;
+using System.Diagnostics;
 using System.Windows.Input;
+using GradePilotInstaller.Services;
 
 namespace GradePilotInstaller.ViewModels
 {
     public class FinishViewModel : BaseViewModel
     {
+        private readonly IPathService _pathService;
+        private bool _createDesktopShortcut = true;
+        private bool _createStartMenuShortcut = true;
+
+        public bool CreateDesktopShortcut
+        {
+            get => _createDesktopShortcut;
+            set => SetProperty(ref _createDesktopShortcut, value);
+        }
+
+        public bool CreateStartMenuShortcut
+        {
+            get => _createStartMenuShortcut;
+            set => SetProperty(ref _createStartMenuShortcut, value);
+        }
+
         public ICommand FinishCommand { get; }
 
-        public FinishViewModel()
+        public FinishViewModel(IPathService pathService)
         {
-            FinishCommand = new RelayCommand(o => System.Windows.Application.Current.Shutdown());
+            _pathService = pathService;
+            FinishCommand = new RelayCommand(OnFinish);
+        }
+
+        private void OnFinish(object? parameter)
+        {
+            if (CreateDesktopShortcut)
+            {
+                var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+                var linkPath = Path.Combine(desktopDir, "GradePilot.lnk");
+                CreateShortcut(linkPath, _pathService.ExtensionDirectory);
+            }
+
+            if (CreateStartMenuShortcut)
+            {
+                var startMenuDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), "Programs", "GradePilot");
+                Directory.CreateDirectory(startMenuDir);
+                var linkPath = Path.Combine(startMenuDir, "GradePilot.lnk");
+                CreateShortcut(linkPath, _pathService.ExtensionDirectory);
+            }
+
+            System.Windows.Application.Current.Shutdown();
+        }
+
+        private void CreateShortcut(string shortcutPath, string targetPath)
+        {
+            try
+            {
+                var p = new Process();
+                p.StartInfo.FileName = "powershell.exe";
+                p.StartInfo.Arguments = $"-NoProfile -WindowStyle Hidden -Command \"$wshell = New-Object -ComObject WScript.Shell; $s = $wshell.CreateShortcut('{shortcutPath}'); $s.TargetPath = '{targetPath}'; $s.Save()\"";
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.CreateNoWindow = true;
+                p.Start();
+                p.WaitForExit();
+            }
+            catch { }
         }
     }
 }

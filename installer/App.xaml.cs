@@ -14,10 +14,14 @@ namespace GradePilotInstaller
         public App()
         {
             _host = Host.CreateDefaultBuilder()
-                .ConfigureLogging(logging =>
+                .ConfigureLogging((context, logging) =>
                 {
                     logging.AddSimpleConsole(options => options.TimestampFormat = "[HH:mm:ss] ");
-                    // File logging can be attached here later
+                    logging.Services.AddSingleton<ILoggerProvider>(sp => 
+                    {
+                        var pathService = sp.GetRequiredService<IPathService>();
+                        return new FileLoggerProvider(pathService.LogFile);
+                    });
                 })
                 .ConfigureServices((context, services) =>
                 {
