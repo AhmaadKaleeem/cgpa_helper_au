@@ -21,7 +21,7 @@ function Write-Header {
     Write-Host "   $cAccent \____|_|  \__,_|\__,_|\___|_|   |_|_|\___/ \__|$cReset"
     Write-Host ""
     Write-Host "  $cMuted          For Air University Students$cReset"
-    Write-Host "  $cText              Developed by Ahmad Kaleem$cReset"
+    Write-Host "  $cText              Developed by Ahmad Kaleem Bhatti$cReset"
     Write-Host ""
     Write-Host " $cMuted---------------------------------------------------$cReset"
     Write-Host " $cText        AUTOMATED RELEASE PIPELINE v1.0$cReset"

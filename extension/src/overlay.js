@@ -47,7 +47,7 @@
           '</div>' +
           '<div class="au-header__text">' +
             '<div class="au-header__title" style="font-family: var(\'--font-serif\'); font-size: 22px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.5px; line-height: 1.2;">GradePilot</div>' +
-            '<div class="au-header__sub" style="font-family: var(\'--font-sans\'); font-size: 13px; color: var(--accent-gold); font-weight: 500; margin-top: 4px;">By Ahmad Kaleem</div>' +
+            '<div class="au-header__sub" style="font-family: var(\'--font-sans\'); font-size: 13px; color: var(--accent-gold); font-weight: 500; margin-top: 4px;">By Ahmad Kaleem Bhatti</div>' +
           '</div>' +
         '</div>' +
         '<button class="au-header__close" id="au-close-btn" aria-label="Close panel" title="Close (Esc)">&times;</button>' +

@@ -25,7 +25,9 @@ There are three ways to install GradePilot.
 
 ### Option A — Windows Installer (recommended for most users)
 
-1. Download [GradePilotSetup.exe](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilotSetup.exe) (v1.0.0).
+1. Download the installer using one of these options:
+   * **Direct Download**: [GradePilotSetup.exe (v1.0.0)](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilotSetup.exe)
+   * **Release Page**: [View all v1.0.0 downloads](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/tag/v1.0.0)
 2. Run the installer and follow the on-screen steps.
 3. The installer extracts the extension files to the folder you select and opens the Chrome extensions page.
 4. In Chrome, turn on **Developer Mode** (top right of `chrome://extensions`).
@@ -33,7 +35,9 @@ There are three ways to install GradePilot.
 
 ### Option B — ZIP File (manual install)
 
-1. Download [GradePilot-v1.0.0.zip](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilot-v1.0.0.zip).
+1. Download the extension ZIP using one of these options:
+   * **Direct Download**: [GradePilot-v1.0.0.zip](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilot-v1.0.0.zip)
+   * **Release Page**: [View all v1.0.0 downloads](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/tag/v1.0.0)
 2. Extract the ZIP to any folder on your computer (for example, `C:\GradePilot`).
 3. Open Chrome and go to `chrome://extensions`.
 4. Turn on **Developer Mode**.

@@ -146,7 +146,7 @@ namespace GradePilotInstaller.ViewModels
                 {
                     key.SetValue("DisplayName", "GradePilot");
                     key.SetValue("DisplayVersion", "1.0.0");
-                    key.SetValue("Publisher", "Ahmad Kaleem");
+                    key.SetValue("Publisher", "Ahmad Kaleem Bhatti");
                     string uninstallCmd = $"powershell.exe -WindowStyle Hidden -Command \"Start-Sleep -Seconds 2; Remove-Item -Recurse -Force '{_pathService.InstallRoot}'; Remove-Item -Force 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\GradePilot'\"";
                     key.SetValue("UninstallString", uninstallCmd);
                     key.SetValue("NoModify", 1);
