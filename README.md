@@ -34,13 +34,25 @@ Your academic data never leaves your computer. GradePilot performs all calculati
 
 GradePilot can be installed using one of the following methods.
 
-## Option 1 — Windows Installer (Recommended)
+## Option 1: WinGet (Recommended)
 
-You can download the installer directly, or visit the release page:
+Install GradePilot directly from the Windows Package Manager:
+
+```bash
+winget install AhmadKaleemBhatti.GradePilot
+```
+
+Note: The package may take some time to appear after a new release or initial publication due to WinGet repository synchronization.
+
+---
+
+## Option 2: Windows Installer
+
+You can download the installer manually:
 * **Direct Download**: [GradePilotSetup.exe (v1.0.0)](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilotSetup.exe)
 * **Release Page**: [View all v1.0.0 downloads](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/tag/v1.0.0)
 
-Run the installer once downloaded.
+Run the installer once downloaded. It will:
 
 * Install GradePilot to your computer
 * Create Desktop and Start Menu shortcuts (optional)
@@ -49,7 +61,7 @@ Run the installer once downloaded.
 
 ---
 
-## Option 2 — Install from ZIP
+## Option 3: Install from ZIP (Advanced)
 
 1. Download the ZIP file using one of these options:
    * **Direct Download**: [GradePilot-v1.0.0.zip](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilot-v1.0.0.zip)
@@ -63,7 +75,7 @@ Run the installer once downloaded.
 
 ---
 
-## Option 3 — Build from Source
+## Option 4: Build from Source
 
 ```bash
 git clone https://github.com/AhmaadKaleeem/cgpa_helper_au.git

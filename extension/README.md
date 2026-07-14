@@ -30,14 +30,25 @@ All calculations run inside your browser. Your academic data is never uploaded o
 
 # Installation
 
-## Option 1 — Windows Installer (Recommended)
+## Option 1: WinGet (Recommended)
 
+Install GradePilot directly from the Windows Package Manager:
+
+```bash
+winget install AhmadKaleemBhatti.GradePilot
+```
+
+Note: The package may take some time to appear after a new release or initial publication due to WinGet repository synchronization.
+
+## Option 2: Windows Installer
+
+You can download the installer manually:
 * **Direct Download**: [GradePilotSetup.exe (v1.0.0)](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilotSetup.exe)
 * **Release Page**: [View all v1.0.0 downloads](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/tag/v1.0.0)
 
 Download the installer and run it.
 
-## Option 2 — Install from ZIP
+## Option 3: Install from ZIP (Advanced)
 
 1. Download the ZIP file using one of these options:
    * **Direct Download**: [GradePilot-v1.0.0.zip](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilot-v1.0.0.zip)
@@ -48,7 +59,7 @@ Download the installer and run it.
 5. Click **Load unpacked** and select the extracted folder.
 6. Log into the Air University Student Portal and open your Grade Report.
 
-## Option 3 — Build from Source
+## Option 4: Build from Source
 
 ```bash
 git clone https://github.com/AhmaadKaleeem/cgpa_helper_au.git

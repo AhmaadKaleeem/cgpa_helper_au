@@ -1,6 +1,6 @@
 # GradePilot User Manual
 
-**Version 1.0 — Air University Student Portal Extension**
+**Version 1.0 - Air University Student Portal Extension**
 
 Support: [ahmadkaleeem1@gmail.com](mailto:ahmadkaleeem1@gmail.com)  
 Bugs: [GitHub Issues](https://github.com/AhmaadKaleeem/cgpa_helper_au/issues)
@@ -23,7 +23,17 @@ Bugs: [GitHub Issues](https://github.com/AhmaadKaleeem/cgpa_helper_au/issues)
 
 There are three ways to install GradePilot.
 
-### Option A — Windows Installer (recommended for most users)
+### Option A: WinGet (Recommended)
+
+Install GradePilot directly from the Windows Package Manager:
+
+```bash
+winget install AhmadKaleemBhatti.GradePilot
+```
+
+Note: The package may take some time to appear after a new release or initial publication due to WinGet repository synchronization.
+
+### Option B: Windows Installer
 
 1. Download the installer using one of these options:
    * **Direct Download**: [GradePilotSetup.exe (v1.0.0)](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilotSetup.exe)
@@ -33,7 +43,7 @@ There are three ways to install GradePilot.
 4. In Chrome, turn on **Developer Mode** (top right of `chrome://extensions`).
 5. Click **Load unpacked** and select the folder shown by the installer.
 
-### Option B — ZIP File (manual install)
+### Option C: ZIP File (Advanced)
 
 1. Download the extension ZIP using one of these options:
    * **Direct Download**: [GradePilot-v1.0.0.zip](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilot-v1.0.0.zip)
@@ -43,13 +53,13 @@ There are three ways to install GradePilot.
 4. Turn on **Developer Mode**.
 5. Click **Load unpacked** and select the folder you extracted to.
 
-### Option C — Clone from GitHub (for developers)
+### Option D: Clone from GitHub (For Developers)
 
 ```bash
 git clone https://github.com/AhmaadKaleeem/cgpa_helper_au.git
 ```
 
-Then follow Option B steps 3–5, selecting the `extension` folder inside the cloned repository.
+Then follow Option C steps 3 to 5, selecting the `extension` folder inside the cloned repository.
 
 ---
 
