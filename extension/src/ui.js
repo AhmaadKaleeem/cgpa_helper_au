@@ -250,7 +250,12 @@
     const availableToExclude = [];
     _record.semesters.forEach(s => {
       s.courses.forEach(c => {
-        if (!manualExcl.includes(c.id)) availableToExclude.push(c);
+        if (!manualExcl.includes(c.id)) {
+          const g = AU_H.normalizeGrade(c.grade);
+          if (g !== 'S' && g !== 'U') {
+            availableToExclude.push(c);
+          }
+        }
       });
     });
     if (availableToExclude.length > 0) {
