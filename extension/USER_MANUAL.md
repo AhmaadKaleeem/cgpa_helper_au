@@ -21,35 +21,45 @@ Bugs: [GitHub Issues](https://github.com/AhmaadKaleeem/cgpa_helper_au/issues)
 
 ## 1. Installation
 
-Here are all 4 ways you can download and install the extension:
+There are three ways to install GradePilot.
 
 ### Option A: WinGet (Recommended)
 
-Open Command Prompt or PowerShell and type:
+Install GradePilot directly from the Windows Package Manager:
+
 ```bash
 winget install AhmadKaleemBhatti.GradePilot
 ```
 
-### Option B: Windows Installer (.exe)
+Note: The package may take some time to appear after a new release or initial publication due to WinGet repository synchronization.
 
-Users can download `GradePilotSetup.exe` from our GitHub Releases page, which automatically installs the extension files and opens Chrome for them.
-* **Direct Download**: [GradePilotSetup.exe (v1.0.0)](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilotSetup.exe)
-* **Releases Page**: [GitHub Releases](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases)
+### Option B: Windows Installer
+
+1. Download the installer using one of these options:
+   * **Direct Download**: [GradePilotSetup.exe (v1.0.0)](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilotSetup.exe)
+   * **Release Page**: [View all v1.0.0 downloads](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/tag/v1.0.0)
+2. Run the installer and follow the on-screen steps.
+3. The installer extracts the extension files to the folder you select and opens the Chrome extensions page.
+4. In Chrome, turn on **Developer Mode** (top right of `chrome://extensions`).
+5. Click **Load unpacked** and select the folder shown by the installer.
 
 ### Option C: ZIP File (Advanced)
 
-Users can download the `GradePilot-v1.0.0.zip` from our GitHub Releases, extract it anywhere on their computer, and load the folder in Chrome via Developer Mode.
-* **Direct Download**: [GradePilot-v1.0.0.zip](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilot-v1.0.0.zip)
-* **Releases Page**: [GitHub Releases](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases)
+1. Download the extension ZIP using one of these options:
+   * **Direct Download**: [GradePilot-v1.0.0.zip](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilot-v1.0.0.zip)
+   * **Release Page**: [View all v1.0.0 downloads](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/tag/v1.0.0)
+2. Extract the ZIP to any folder on your computer (for example, `C:\GradePilot`).
+3. Open Chrome and go to `chrome://extensions`.
+4. Turn on **Developer Mode**.
+5. Click **Load unpacked** and select the folder you extracted to.
 
-### Option D: Build from Source (For Developers)
+### Option D: Clone from GitHub (For Developers)
 
-Developers can run:
 ```bash
 git clone https://github.com/AhmaadKaleeem/cgpa_helper_au.git
 ```
-and load the `extension` folder manually into Chrome's Developer Mode.
-* **Releases Page**: [GitHub Releases](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases)
+
+Then follow Option C steps 3 to 5, selecting the `extension` folder inside the cloned repository.
 
 ---
 
@@ -117,11 +127,7 @@ Lets you test retake scenarios without committing to anything.
 3. Select a new grade from the dropdown.
 4. The CGPA updates live to show the effect.
 
-### Active Simulations Menu
-
-Whenever you simulate a grade, that course is instantly added to the **Active Simulations** list at the top of the tab. This gives you a central location to view, modify, or remove all of your active overrides across all semesters without scrolling.
-
-You can simulate multiple courses at the same time. Changes are temporary and do not affect your actual records. Click **Clear All Simulations** at the bottom of the page to reset.
+You can simulate multiple courses at the same time. Changes are temporary and do not affect your actual records.
 
 ---
 
