@@ -5,6 +5,9 @@
   "description": "Production-grade GradePilot for Air University Student Portal. Dashboard, retake simulator, target planner, analytics and more.",
   "permissions": ["storage"],
   "host_permissions": ["https://portals.au.edu.pk/*"],
+  "background": {
+    "service_worker": "src/background.js"
+  },
   "content_scripts": [
     {
       "matches": ["https://portals.au.edu.pk/*"],
