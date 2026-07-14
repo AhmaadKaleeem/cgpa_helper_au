@@ -11,7 +11,9 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="Installation Folder" Style="{StaticResource TypographyH1}" />
-        <TextBlock Grid.Row="1" Text="Choose where to save the GradePilot files on your computer." Style="{StaticResource TypographySubheading}" />
+        <TextBlock Grid.Row="1" TextWrapping="Wrap" Style="{StaticResource TypographySubheading}">
+            Choose where to install GradePilot. Extension files go directly in this folder. Chrome will load it from here.
+        </TextBlock>
 
         <Grid Grid.Row="2" Margin="0,0,0,8">
             <Grid.ColumnDefinitions>

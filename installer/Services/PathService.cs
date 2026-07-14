@@ -5,8 +5,15 @@ namespace GradePilotInstaller.Services
 {
     public interface IPathService
     {
+        // User-chosen folder. Extension files are extracted here.
         string InstallRoot { get; set; }
+
+        // Same as InstallRoot. Chrome loads this folder as the unpacked extension.
         string ExtensionDirectory { get; }
+
+        // Fixed support-file location under %LOCALAPPDATA%\GradePilot.
+        string AppDataRoot { get; }
+
         string ConfigDirectory { get; }
         string CacheDirectory { get; }
         string LogDirectory { get; }
@@ -22,17 +29,27 @@ namespace GradePilotInstaller.Services
 
         public PathService()
         {
-            InstallRoot = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GradePilot");
+            // Default: user's local app data so no admin rights needed
+            InstallRoot = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "GradePilot");
         }
 
-        public string ExtensionDirectory => Path.Combine(InstallRoot, "extension");
-        public string ConfigDirectory => Path.Combine(InstallRoot, "config");
-        public string CacheDirectory => Path.Combine(InstallRoot, "cache");
-        public string LogDirectory => Path.Combine(InstallRoot, "logs");
-        public string LegalDirectory => Path.Combine(InstallRoot, "Legal");
-        public string InstalledIcoPath => Path.Combine(InstallRoot, "logo.ico");
-        
+        // Extension files are extracted directly into InstallRoot. No subfolder.
+        public string ExtensionDirectory => InstallRoot;
+
+        // Support files always live here, regardless of where the extension is installed.
+        public string AppDataRoot => Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "GradePilot");
+
+        public string ConfigDirectory  => Path.Combine(AppDataRoot, "config");
+        public string CacheDirectory   => Path.Combine(AppDataRoot, "cache");
+        public string LogDirectory     => Path.Combine(AppDataRoot, "logs");
+        public string LegalDirectory   => Path.Combine(AppDataRoot, "Legal");
+        public string InstalledIcoPath => Path.Combine(AppDataRoot, "logo.ico");
+
         public string SettingsFile => Path.Combine(ConfigDirectory, "settings.json");
-        public string LogFile => Path.Combine(LogDirectory, "install.log");
+        public string LogFile      => Path.Combine(LogDirectory,    "install.log");
     }
 }

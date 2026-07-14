@@ -20,11 +20,11 @@
             </Grid.RowDefinitions>
             
             <TextBlock Grid.Row="0" Style="{StaticResource TypographyBody}" TextWrapping="Wrap" Margin="0,0,0,16">
-                This setup wizard will install GradePilot on your computer.
+                This installer will add GradePilot to Chrome as an unpacked extension.
             </TextBlock>
             
             <TextBlock Grid.Row="1" Style="{StaticResource TypographyBody}" TextWrapping="Wrap" Margin="0,0,0,24">
-                GradePilot helps Air University students calculate their true academic standing and plan future semesters. Your grades stay completely private and never leave your browser.
+                GradePilot reads your Air University portal and calculates your CGPA, semester GPA, and remaining credit load. All processing happens in your browser. No data is sent anywhere.
             </TextBlock>
             
             <StackPanel Grid.Row="2">

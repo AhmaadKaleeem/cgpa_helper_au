@@ -1,84 +1,133 @@
 # GradePilot
 
-GradePilot is an academic assistant designed for Air University students. It integrates with the student portal to calculate grade point averages and simulate academic progress.
+GradePilot is an open-source Chrome extension built for Air University students. It analyzes your student portal grade report, applies official university retake rules, and calculates your true academic standing with complete privacy.
 
-Developed by Ahmad Kaleem.
-
-## Overview
-
-Calculating grade point averages manually or predicting how a retake will impact academic standing can be tedious. GradePilot is a Chrome extension that processes your grade reports directly in the browser to calculate Semester and Cumulative GPAs, and provides tools for academic planning.
-
-### Core Functions
-
-* Academic Standing: View your calculated Semester GPA and Cumulative GPA.
-* Retake Simulator: Apply official university retake rules to see potential CGPA changes.
-* Target Planner: Calculate the exact grades required in the current semester to reach a target CGPA.
-* Privacy: GradePilot runs entirely on your local machine. Your data is never sent to external servers.
-
-## Installation Methods
-
-To use GradePilot, you must be using Google Chrome. The extension files are installed to your local application data directory.
-
-Choose one of the four methods below to install GradePilot:
-
-### 1. Winget
-
-Open PowerShell as an Administrator and run:
-
-```powershell
-winget install GradePilot
-```
-
-### 2. Windows Installer
-
-1. Download GradePilotSetup.exe from the repository.
-2. Run the installer (Administrator privileges recommended).
-3. Follow the setup wizard instructions.
-
-### 3. ZIP Archive
-
-1. Download the extension ZIP file from the repository.
-2. Extract the contents to a folder on your computer.
-3. Open Google Chrome and navigate to chrome://extensions.
-4. Enable Developer Mode.
-5. Click "Load unpacked" and select the extracted folder.
-
-### 4. PowerShell Script
-
-1. Download the installation script.
-2. Open PowerShell and run:
-
-```powershell
-.\install.ps1
-```
-
-## System Requirements
-
-* Operating System: Windows 10 (Version 1809) or newer.
-* Browser: Google Chrome.
-
-## Technical Architecture
-
-GradePilot is composed of a web extension and a Windows desktop installer.
-
-The Chrome extension uses standard JavaScript, HTML, and CSS, and complies with Chrome Extension Manifest V3. Its architecture uses a modular, event-driven design.
-
-The Windows installer is a standalone desktop application built with C# and .NET 8, using the Windows Presentation Foundation (WPF) framework. It extracts the extension payload using ZipArchive streams and guides the user through the setup process.
-
-## Developer Setup
-
-To build the installer and package the extension from source:
-
-1. Clone the repository.
-2. Open PowerShell and navigate to the installer directory.
-3. Run the release pipeline:
-
-```powershell
-.\release.ps1
-```
-
-The pipeline will compress the extension, compile the C# WPF installer, and output the finalized artifacts.
+Unlike manual GPA calculators, GradePilot automatically handles repeated courses, excludes non-credit subjects, and provides planning tools to help you make informed academic decisions.
 
 ---
 
-GradePilot is an independent educational tool and is not affiliated with Air University.
+# Features
+
+### Accurate GPA Calculation
+
+* Calculate Semester GPA (SGPA)
+* Calculate Cumulative GPA (CGPA)
+* Automatically exclude non-credit courses
+* Apply Air University retake rules automatically
+
+### Degree Planning
+
+Plan your remaining semesters by setting a target CGPA and seeing the grades required to achieve it.
+
+### Retake Analysis
+
+Simulate course retakes and identify which subjects will have the greatest impact on improving your CGPA.
+
+### Privacy First
+
+Your academic data never leaves your computer. GradePilot performs all calculations locally inside your browser.
+
+---
+
+# Installation
+
+GradePilot can be installed using one of the following methods.
+
+## Option 1 — Windows Installer (Recommended)
+
+Download the latest GradePilot Setup from the [Releases](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases) page and run the installer.
+
+The installer will:
+
+* Install GradePilot to your computer
+* Create Desktop and Start Menu shortcuts (optional)
+* Guide you through loading the extension in Chrome
+* Configure everything required for first-time setup
+
+---
+
+## Option 2 — Install from ZIP
+
+1. Download the latest release ZIP from the [Releases](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases) page.
+2. Extract the archive.
+3. Open Chrome.
+4. Navigate to `chrome://extensions`.
+5. Enable **Developer Mode**.
+6. Click **Load unpacked**.
+7. Select the extracted GradePilot folder.
+
+---
+
+## Option 3 — Build from Source
+
+```bash
+git clone https://github.com/AhmaadKaleeem/cgpa_helper_au.git
+```
+
+Open Chrome, enable Developer Mode, and load the `extension` folder as an unpacked extension.
+
+---
+
+# How GradePilot Works
+
+### Secure UI
+
+The interface is rendered inside a Shadow DOM, preventing conflicts with the university portal while maintaining a consistent user experience.
+
+### Smart Data Extraction
+
+GradePilot reads your grade report directly from the portal and extracts the required academic information automatically.
+
+### GPA Engine
+
+The calculation engine follows Air University academic policies, including repeated course handling and exclusion of non-credit courses.
+
+### Local Storage
+
+All preferences are stored locally in your browser. No academic records are uploaded or transmitted.
+
+---
+
+# Documentation
+
+Additional documentation is available in this repository.
+
+* [User Manual](extension/USER_MANUAL.md)
+* [Privacy Policy](extension/PRIVACY_POLICY.md)
+* [Terms of Service](extension/TERMS_OF_SERVICE.md)
+
+---
+
+# Support
+
+If you encounter a bug, installation issue, or calculation problem, please create a [GitHub Issue](https://github.com/AhmaadKaleeem/cgpa_helper_au/issues).
+
+For direct support, contact:
+
+**[ahmadkaleeem1@gmail.com](mailto:ahmadkaleeem1@gmail.com)**
+
+When reporting an issue, please include:
+
+* GradePilot version
+* Chrome version
+* Windows version (if applicable)
+* Screenshots (if available)
+* Steps to reproduce the problem
+
+---
+
+# Contributing
+
+Contributions, bug reports, and feature requests are welcome.
+
+Please open an Issue before submitting large changes.
+
+---
+
+# License
+
+This project is released under the MIT License.
+
+---
+
+Designed and developed by Ahmad Kaleem Bhatti.

@@ -88,10 +88,13 @@ namespace GradePilotInstaller.Services
                 
                 try
                 {
-                    if (Directory.Exists(_pathService.InstallRoot))
+                    // On failure, remove the extension folder. Leave AppDataRoot (logs) intact.
+                    if (Directory.Exists(_pathService.InstallRoot) &&
+                        !string.Equals(_pathService.InstallRoot, _pathService.AppDataRoot,
+                            System.StringComparison.OrdinalIgnoreCase))
                     {
                         Directory.Delete(_pathService.InstallRoot, true);
-                        _logger.LogInformation("Rollback completed: installation directory removed.");
+                        _logger.LogInformation("Rollback completed: extension directory removed.");
                     }
                 }
                 catch (Exception rbEx)

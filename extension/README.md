@@ -1,56 +1,77 @@
 # GradePilot
 
-GradePilot is a browser tool built for Air University students. It reads your student portal grade report and calculates your true academic standing. It applies university retake rules automatically and helps you plan your future semesters.
+GradePilot is an open-source Chrome extension built for Air University students. It reads your student portal grade report, applies official university retake rules, and calculates your true academic standing with complete privacy.
 
-## What It Does For You
+---
 
-Calculate True Grades
-The tool calculates your Semester GPA and Cumulative GPA. It drops non credit courses and applies the best grade for retaken subjects. 
+# Features
 
-Plan Your Degree
-Input a target score. The tool tells you exactly what grades you need in your remaining semesters to graduate with that score. 
+### Accurate GPA Calculation
 
-Simulate Retakes
-Find out exactly how much your score will increase if you retake specific past courses. The tool ranks your past classes to show you where to spend your effort. 
+* Calculate Semester GPA (SGPA)
+* Calculate Cumulative GPA (CGPA)
+* Automatically exclude non-credit courses
+* Apply Air University retake rules automatically
 
-## How To Install 
+### Degree Planning
 
-There are currently two ways to install GradePilot on your computer.
+Set a target CGPA and see the exact grades you need across your remaining semesters.
 
-Install from a ZIP File
-1. Download the extension ZIP file and extract it.
-2. Open Google Chrome and go to the extensions page.
-3. Turn on Developer Mode in the top right.
-4. Click Load unpacked and select your extracted folder.
-5. Log into the student portal and view your grade report. 
+### Retake Analysis
 
-Install from GitHub
-Developers can clone this repository directly. 
-1. Run git clone https://github.com/AhmaadKaleeem/cgpa_helper_au.git to get the code.
-2. Follow the steps above to load the unpacked extension in Chrome. 
+Simulate course retakes and find which subjects will improve your CGPA the most.
 
-Coming Soon Windows Setup Wizard and Winget
-We are building a dedicated Windows installer. Soon you will be able to download a standard executable file or install it directly via Winget. The installer will automatically handle the folder creation and setup process for you. 
+### Privacy First
 
-## How It Works Under The Hood
+All calculations run inside your browser. Your academic data is never uploaded or transmitted.
 
-GradePilot uses clean ES2022 Vanilla JavaScript and follows strict security policies. 
+---
 
-User Interface
-The tool renders its interface inside a Shadow DOM. This isolates the styles and prevents the extension from breaking the university portal layout. 
+# Installation
 
-Data Extraction
-The parser reads the HTML structure of the university portal and extracts your course names and grades. 
+## Option 1 — Windows Installer (Recommended)
 
-Math Engine
-The engine calculates all grades. It strictly enforces the university policy to handle repeated courses and summer classes. 
+Download the latest GradePilot Setup from the [Releases](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases) page and run the installer.
 
-Data Storage
-Your data never leaves your browser. The tool uses local browser storage to save your settings. 
+## Option 2 — Install from ZIP
 
-## License
+1. Download the latest release ZIP from the [Releases](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases) page.
+2. Extract the archive.
+3. Open Chrome and go to `chrome://extensions`.
+4. Enable **Developer Mode**.
+5. Click **Load unpacked** and select the extracted folder.
+6. Log into the Air University Student Portal and open your Grade Report.
 
-This project is open source. You may reuse and modify this code. 
+## Option 3 — Build from Source
 
-Designed by Ahmad Kaleem Bhatti 
-Read the User Manual for complete instructions.
+```bash
+git clone https://github.com/AhmaadKaleeem/cgpa_helper_au.git
+```
+
+Enable Developer Mode in Chrome, click **Load unpacked**, and select the `extension` folder.
+
+---
+
+# Documentation
+
+* [User Manual](USER_MANUAL.md)
+* [Privacy Policy](PRIVACY_POLICY.md)
+* [Terms of Service](TERMS_OF_SERVICE.md)
+
+---
+
+# Support
+
+For bugs or installation issues, open a [GitHub Issue](https://github.com/AhmaadKaleeem/cgpa_helper_au/issues).
+
+For direct support: **[ahmadkaleeem1@gmail.com](mailto:ahmadkaleeem1@gmail.com)**
+
+---
+
+# License
+
+Released under the MIT License.
+
+---
+
+Designed and developed by Ahmad Kaleem Bhatti.

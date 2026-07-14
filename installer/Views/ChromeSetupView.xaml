@@ -10,13 +10,13 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-        <TextBlock Text="Connect to Chrome" Style="{StaticResource TypographyH1}" />
-        <TextBlock Grid.Row="1" Text="The files are ready. Follow these steps to load the extension into your browser." Style="{StaticResource TypographySubheading}" />
+        <TextBlock Text="Load Extension in Chrome" Style="{StaticResource TypographyH1}" />
+        <TextBlock Grid.Row="1" Text="Follow these steps to load GradePilot into Chrome." Style="{StaticResource TypographySubheading}" />
 
         <Border Grid.Row="2" Background="{DynamicResource BrushSurface}" CornerRadius="4" Padding="24">
             <StackPanel>
                 <TextBlock Style="{StaticResource TypographyBody}" Margin="0,0,0,16" TextWrapping="Wrap">
-                    <Run FontWeight="SemiBold" Foreground="{DynamicResource BrushPrimaryAction}">Great!</Run> We have opened your Chrome Extensions page. If it didn't open (e.g. Chrome asked for a profile), open Chrome and go to <Run FontWeight="SemiBold">chrome://extensions</Run>.
+                    Chrome did not open automatically, or it asked you to pick a profile. Open Chrome and type <Run FontWeight="SemiBold">chrome://extensions</Run> in the address bar.
                 </TextBlock>
                 <StackPanel Margin="0,0,0,24">
                     <TextBlock Style="{StaticResource TypographyBody}" Margin="0,0,0,12">
@@ -26,9 +26,9 @@
                         <Run FontWeight="SemiBold">2.</Run> Click <Run FontWeight="SemiBold">Load unpacked</Run>.
                     </TextBlock>
                     <TextBlock Style="{StaticResource TypographyBody}">
-                        <Run FontWeight="SemiBold">3.</Run> Select the folder below:
+                        <Run FontWeight="SemiBold">3.</Run> Select <Run FontWeight="SemiBold">this exact folder</Run> (select the folder itself, not a file inside it):
                     </TextBlock>
-                    <TextBlock Style="{StaticResource TypographyCaption}" Foreground="{DynamicResource BrushTextSecondary}" Margin="16,4,0,0" Text="{Binding InstallPath}" TextWrapping="Wrap" />
+                    <TextBlock Style="{StaticResource TypographyCaption}" Foreground="{DynamicResource BrushPrimaryAction}" Margin="16,4,0,0" Text="{Binding InstallPath}" TextWrapping="Wrap" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Button Content="Open Folder" Command="{Binding OpenFolderCommand}" Style="{StaticResource StyleSecondaryButton}" Margin="0,0,12,0" />
@@ -39,7 +39,7 @@
         </Border>
 
         <TextBlock Grid.Row="3" Style="{StaticResource TypographyBody}" Margin="0,16,0,0" TextWrapping="Wrap">
-            Having trouble? See <Hyperlink NavigateUri="https://github.com/AhmaadKaleeem/cgpa_helper_au/blob/main/extension/USER_MANUAL.md" RequestNavigate="Hyperlink_RequestNavigate">user manual here</Hyperlink> which provides accurate details for all modes of installing and use cases.
+            Need help? See the <Hyperlink NavigateUri="https://github.com/AhmaadKaleeem/cgpa_helper_au/blob/main/extension/USER_MANUAL.md" RequestNavigate="Hyperlink_RequestNavigate">user manual</Hyperlink> for step-by-step instructions for every installation method.
         </TextBlock>
     </Grid>
     </ScrollViewer>

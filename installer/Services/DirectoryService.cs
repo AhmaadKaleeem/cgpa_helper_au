@@ -20,8 +20,11 @@ namespace GradePilotInstaller.Services
 
         public void InitializeDirectories()
         {
+            // Extension destination (user-chosen — Chrome loads this directly)
             Directory.CreateDirectory(_pathService.InstallRoot);
-            Directory.CreateDirectory(_pathService.ExtensionDirectory);
+
+            // Support files always go under AppDataRoot (may be same as InstallRoot for default path)
+            Directory.CreateDirectory(_pathService.AppDataRoot);
             Directory.CreateDirectory(_pathService.ConfigDirectory);
             Directory.CreateDirectory(_pathService.CacheDirectory);
             Directory.CreateDirectory(_pathService.LogDirectory);
@@ -31,7 +34,12 @@ namespace GradePilotInstaller.Services
         public void ValidateDirectories()
         {
             if (!Directory.Exists(_pathService.InstallRoot))
-                throw new DirectoryNotFoundException($"Installation root was not created: {_pathService.InstallRoot}");
+                throw new DirectoryNotFoundException(
+                    $"Extension installation folder was not created: {_pathService.InstallRoot}");
+
+            if (!Directory.Exists(_pathService.AppDataRoot))
+                throw new DirectoryNotFoundException(
+                    $"AppData support folder was not created: {_pathService.AppDataRoot}");
         }
 
         public void CleanTemporaryFolders()

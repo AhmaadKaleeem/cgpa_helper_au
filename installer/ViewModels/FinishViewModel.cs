@@ -46,10 +46,7 @@ namespace GradePilotInstaller.ViewModels
             FinishCommand = new RelayCommand(OnFinish);
         }
 
-        /// <summary>
-        /// Called by MainViewModel after successful installation. 
-        /// Only creates shortcuts when the extension directory is confirmed to exist.
-        /// </summary>
+        // Called after successful installation. Verifies files exist before enabling shortcut creation.
         public void MarkInstallationSuccess()
         {
             string manifestPath = Path.Combine(_pathService.ExtensionDirectory, "manifest.json");
