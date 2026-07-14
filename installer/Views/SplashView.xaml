@@ -8,7 +8,17 @@
             <TextBlock Text="Version 1.0.0" Style="{StaticResource TypographyCaption}" HorizontalAlignment="Center" Margin="0,0,0,48" />
             
             <TextBlock Text="Preparing Installer" Style="{StaticResource TypographyBody}" HorizontalAlignment="Center" Margin="0,0,0,8" />
-            <ProgressBar IsIndeterminate="True" Width="200" />
+            <ProgressBar Width="200" Maximum="100" Height="6">
+                <ProgressBar.Triggers>
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Value" From="0" To="100" Duration="0:0:2.5" FillBehavior="HoldEnd" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </ProgressBar.Triggers>
+            </ProgressBar>
         </StackPanel>
     </Grid>
 </UserControl>
