@@ -549,6 +549,8 @@
     return '';
   }
 
+
+
   function _renderScenarios(dec) {
     const overrides = AU_STORAGE.getOverrides();
     const simCGPA = AU_ENGINE.calculate(_record, overrides, _settings.manualExclusions || [], dec).cgpa;
@@ -713,22 +715,27 @@
   }
 
   function _renderHighestImpactActions(advisor, target, dec, r) {
-    if (!advisor.length) {
-      return _section('Strategic Opportunities',
-        '<p class="au-muted">No improvable courses found.</p>'
+    const overrides = AU_STORAGE.getOverrides() || {};
+    const manualExcl = _settings.manualExclusions || [];
+    
+    let html = _renderActiveSimsMenu(overrides, r, manualExcl);
+
+    let eligibleAdvisor = advisor.filter(item => !manualExcl.includes(item.courseId) && !overrides[item.courseId]);
+
+    if (!eligibleAdvisor.length) {
+      return html + _section('Strategic Opportunities',
+        '<p class="au-muted">No eligible improvable courses found.</p>'
       );
     }
 
-    const overrides = _settings.overrides || {};
-    const rows = advisor.map((item, idx) => {
+    if (_searchTerm) {
+      eligibleAdvisor = eligibleAdvisor.filter(item => item.courseName.toLowerCase().includes(_searchTerm.toLowerCase()));
+    }
+
+    const rows = eligibleAdvisor.map((item, idx) => {
       const optGrades = Object.keys(item.impactMatrix);
       const selOpts = optGrades.map(g => '<option value="' + g + '" data-impact="' + item.impactMatrix[g].toFixed(dec) + '"' + (g==='A' ? ' selected' : '') + '>' + g + '</option>').join('');
       
-      const isSimulated = !!overrides[item.courseId];
-      const simulateBtn = isSimulated
-        ? '<button class="au-btn au-btn--sm au-btn--danger au-advisor-remove" data-id="' + item.courseId + '">Remove</button>'
-        : '<button class="au-btn au-btn--sm au-btn--ghost au-advisor-apply" data-id="' + item.courseId + '" data-idx="' + idx + '">Simulate</button>';
-
       return '<div class="au-advisor-row">' +
         '<div class="au-advisor-row__left">' +
           '<div class="au-advisor-row__course">' + _esc(item.courseName) + '</div>' +
@@ -742,19 +749,22 @@
             '<span class="au-muted">Est. Gain:</span>' +
             '<span class="au-badge au-badge--green" id="au-impact-badge-' + idx + '">+' + item.impactToA.toFixed(dec) + '</span>' +
           '</div>' +
-          '<select class="au-select au-select--sm au-advisor-sel" data-idx="' + idx + '" style="width:70px"' + (isSimulated ? ' disabled' : '') + '>' + selOpts + '</select>' +
-          simulateBtn +
+          '<select class="au-select au-select--sm au-advisor-sel" data-idx="' + idx + '" style="width:70px">' + selOpts + '</select>' +
+          '<button class="au-btn au-btn--sm au-btn--ghost au-advisor-apply" data-id="' + item.courseId + '" data-idx="' + idx + '">Simulate</button>' +
         '</div>' +
       '</div>';
     }).join('');
 
-    return _section(
+    return html + _section(
       'Strategic Opportunities',
       '<p class="au-muted" style="margin-bottom:8px">Retaking these courses yields the highest potential increase to your CGPA.</p>' +
+      '<div class="au-search" style="margin-bottom: 12px;">' +
+        '<span class="au-search__icon">' + _iconSearch() + '</span>' +
+        '<input class="au-search__input" type="text" placeholder="Search courses..." id="au-plan-search" value="' + _esc(_searchTerm) + '">' +
+      '</div>' +
       rows
     );
   }
-
   function _renderFutureSems(dec) {
     const r = _computed;
 
@@ -1051,6 +1061,8 @@
     });
   }
 
+
+
   function _bindSimulate() {
     // Search
     const searchInput = _root.getElementById('au-sim-search');
@@ -1185,6 +1197,16 @@
       });
     });
 
+    const searchInput = _root.getElementById('au-plan-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', AU_H.debounce(() => {
+        _searchTerm = searchInput.value;
+        _render();
+      }, 300));
+    }
+
+    _bindActiveSimsShared();
+
     _root.querySelectorAll('.au-advisor-apply').forEach(btn => {
       btn.addEventListener('click', () => {
         const id  = btn.dataset.id;
@@ -1193,20 +1215,11 @@
         const grade = sel ? sel.value : 'A';
         AU_STORAGE.setOverride(id, grade);
         _refreshComputed();
-        AU_NOTIFICATIONS.show('Retake applied. Check the Simulate tab.', 'success');
         _render();
       });
     });
 
-    _root.querySelectorAll('.au-advisor-remove').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const id = btn.dataset.id;
-        AU_STORAGE.removeOverride(id);
-        _refreshComputed();
-        AU_NOTIFICATIONS.show('Retake simulation removed.', 'success');
-        _render();
-      });
-    });
+    
 
     // Add semester
     const addSemBtn = _root.getElementById('au-add-sem');
