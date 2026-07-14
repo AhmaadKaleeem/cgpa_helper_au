@@ -32,11 +32,11 @@ All calculations run inside your browser. Your academic data is never uploaded o
 
 ## Option 1 — Windows Installer (Recommended)
 
-Download the latest GradePilot Setup from the [Releases](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases) page and run the installer.
+Download the [GradePilotSetup.exe](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilotSetup.exe) (v1.0.0) and run the installer.
 
 ## Option 2 — Install from ZIP
 
-1. Download the latest release ZIP from the [Releases](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases) page.
+1. Download the [GradePilot-v1.0.0.zip](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilot-v1.0.0.zip).
 2. Extract the archive.
 3. Open Chrome and go to `chrome://extensions`.
 4. Enable **Developer Mode**.
