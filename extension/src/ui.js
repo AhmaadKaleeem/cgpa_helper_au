@@ -425,6 +425,50 @@
       '<input class="au-search__input" type="text" placeholder="Search courses..." id="au-sim-search" value="' + _esc(_searchTerm) + '">' +
     '</div>';
 
+    const renderRow = (c) => {
+      const isOn = !!overrides[c.id];
+      const selOpts = _getGradeOpts().map(g => {
+        const sel = (isOn && overrides[c.id] === g) || (!isOn && c.normalizedGrade === g);
+        return '<option value="' + g + '"' + (sel ? ' selected' : '') + '>' + g + '</option>';
+      }).join('');
+
+      let statusBadge = '';
+      if (c.isRetakeReplaced) {
+        statusBadge = '<div style="font-size:10px; color:var(--text-tertiary); margin-top:2px;">Replaced (Excluded from CGPA)</div>';
+      } else if (c.isRetake) {
+        statusBadge = '<div style="font-size:10px; color:var(--info); margin-top:2px;">Retaken (Counts in CGPA)</div>';
+      }
+
+      return '<tr class="' + (isOn ? 'au-row--sim' : '') + '">' +
+        '<td><div style="font-weight:500;">' + _esc(c.name) + '</div>' + statusBadge + '</td>' +
+        '<td class="au-tc">' + (c.isRetakeReplaced ? '<span style="text-decoration:line-through;color:var(--text-tertiary);">' + c.credits + '</span>' : c.credits) + '</td>' +
+        '<td class="au-tc"><span class="au-grade-pill" style="background:' + _gradeColor(c.normalizedGrade) + '">' + _esc(c.grade) + '</span></td>' +
+        '<td class="au-tc"><label class="au-toggle"><input type="checkbox" class="au-retake-chk" data-id="' + c.id + '"' + (isOn ? ' checked' : '') + '><span></span></label></td>' +
+        '<td><select class="au-grade-sel au-select--sm" data-id="' + c.id + '"' + (!isOn ? ' disabled' : '') + '>' + selOpts + '</select></td>' +
+      '</tr>';
+    };
+
+    // Active Simulations Section
+    const activeSims = [];
+    simRecord.semesters.forEach(sem => {
+      sem.courses.forEach(c => {
+        if (overrides[c.id] && !AU_ENGINE.isCourseExcluded(c, _settings.manualExclusions || [])) {
+          activeSims.push(c);
+        }
+      });
+    });
+
+    if (activeSims.length > 0) {
+      activeSims.sort((a, b) => a.name.localeCompare(b.name));
+      const simRows = activeSims.map(c => renderRow(c)).join('');
+      html += _section('Active Simulations',
+        '<table class="au-table" style="border: 2px solid var(--accent); border-radius: var(--radius-md);">' +
+          '<thead><tr><th>Course</th><th>Cr</th><th>Grade</th><th>Sim</th><th>New</th></tr></thead>' +
+          '<tbody>' + simRows + '</tbody>' +
+        '</table>'
+      );
+    }
+
     // Course tables by semester
     simRecord.semesters.forEach(sem => {
       const sortedCourses = [...sem.courses].sort((a, b) => {
@@ -435,30 +479,9 @@
         return a.name.localeCompare(b.name);
       });
       const rows = sortedCourses.map(c => {
-        if (AU_ENGINE.isCourseExcluded(c)) return '';
-        // Apply search filter
+        if (AU_ENGINE.isCourseExcluded(c, _settings.manualExclusions || [])) return '';
         if (_searchTerm && !c.name.toLowerCase().includes(_searchTerm.toLowerCase())) return '';
-
-        const isOn = !!overrides[c.id];
-        const selOpts = _getGradeOpts().map(g => {
-          const sel = (isOn && overrides[c.id] === g) || (!isOn && c.normalizedGrade === g);
-          return '<option value="' + g + '"' + (sel ? ' selected' : '') + '>' + g + '</option>';
-        }).join('');
-
-        let statusBadge = '';
-        if (c.isRetakeReplaced) {
-          statusBadge = '<div style="font-size:10px; color:var(--text-tertiary); margin-top:2px;">Replaced (Excluded from CGPA)</div>';
-        } else if (c.isRetake) {
-          statusBadge = '<div style="font-size:10px; color:var(--info); margin-top:2px;">Retaken (Counts in CGPA)</div>';
-        }
-
-        return '<tr class="' + (isOn ? 'au-row--sim' : '') + '">' +
-          '<td><div style="font-weight:500;">' + _esc(c.name) + '</div>' + statusBadge + '</td>' +
-          '<td class="au-tc">' + (c.isRetakeReplaced ? '<span style="text-decoration:line-through;color:var(--text-tertiary);">' + c.credits + '</span>' : c.credits) + '</td>' +
-          '<td class="au-tc"><span class="au-grade-pill" style="background:' + _gradeColor(c.normalizedGrade) + '">' + _esc(c.grade) + '</span></td>' +
-          '<td class="au-tc"><label class="au-toggle"><input type="checkbox" class="au-retake-chk" data-id="' + c.id + '"' + (isOn ? ' checked' : '') + '><span></span></label></td>' +
-          '<td><select class="au-grade-sel au-select--sm" data-id="' + c.id + '"' + (!isOn ? ' disabled' : '') + '>' + selOpts + '</select></td>' +
-        '</tr>';
+        return renderRow(c);
       }).join('');
 
       if (!rows.trim()) return;
@@ -831,9 +854,10 @@
       ),
 
       _section('Data',
-        '<button class="au-btn au-btn--ghost au-btn--full" id="au-export">Export Data (JSON)</button>' +
+        '<button class="au-btn au-btn--ghost au-btn--full" id="au-export">Export Backup (JSON)</button>' +
         '<label class="au-btn au-btn--ghost au-btn--full" style="cursor:pointer;margin-top:8px">' +
-          'Import Data (JSON)<input type="file" id="au-import" accept=".json" style="display:none"></label>' +
+          'Import Backup (JSON)<input type="file" id="au-import" accept=".json" style="display:none"></label>' +
+        '<button class="au-btn au-btn--full" id="au-export-excel" style="margin-top:8px;background:var(--success);color:#fff">Download Excel Report</button>' +
         '<button class="au-btn au-btn--danger au-btn--full" id="au-reset" style="margin-top:12px">Reset All Data</button>'
       ),
 
@@ -1206,7 +1230,94 @@
       const url  = URL.createObjectURL(blob);
       const a    = Object.assign(document.createElement('a'), { href: url, download: 'au-gpa-data.json' });
       a.click(); URL.revokeObjectURL(url);
-      AU_NOTIFICATIONS.show('Data exported.', 'success');
+      AU_NOTIFICATIONS.show('Backup exported.', 'success');
+    });
+
+    const exportExcelBtn = id('au-export-excel');
+    if (exportExcelBtn) exportExcelBtn.addEventListener('click', () => {
+      try {
+        if (typeof XLSX === 'undefined') throw new Error('Excel library not loaded.');
+        const data = AU_STORAGE.getState();
+        const wb = XLSX.utils.book_new();
+
+        const wsDisclaimer = XLSX.utils.aoa_to_sheet([
+          ["IMPORTANT DISCLAIMER"],
+          [""],
+          ["This data was exported by GradePilot extension by user."],
+          ["The data may diverge from the original transcript data (due to simulated retakes, manual exclusions, or projected semesters)."],
+          ["Always consult the official Air University portal for your true academic standing."]
+        ]);
+        XLSX.utils.book_append_sheet(wb, wsDisclaimer, 'Disclaimer');
+
+        if (data.record) {
+          const rec = data.record;
+          const wsOverview = XLSX.utils.json_to_sheet([{
+            'Name': rec.name || '',
+            'Session': rec.session || '',
+            'CGPA': rec.cgpa || '',
+            'Total Counted Credits': rec.totalCountedCredits || '',
+            'Total Earned Credits': rec.totalEarnedCredits || ''
+          }]);
+          XLSX.utils.book_append_sheet(wb, wsOverview, 'Overview');
+
+          const courseData = [];
+          (rec.semesters || []).forEach(s => {
+            (s.courses || []).forEach(c => {
+              courseData.push({
+                'Semester': s.name || '',
+                'Course ID': c.id || '',
+                'Course Name': c.name || '',
+                'Credits': c.credits || '',
+                'Grade': c.grade || '',
+                'Normalized Grade': c.normalizedGrade || '',
+                'Is Retake': !!c.isRetake,
+                'Is Replaced': !!c.isRetakeReplaced
+              });
+            });
+          });
+          if (courseData.length) XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(courseData), 'Courses');
+        }
+
+        if (data.settings) {
+          XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet([data.settings]), 'Settings');
+        }
+
+        if (data.simulatedOverrides && Object.keys(data.simulatedOverrides).length > 0) {
+          const overrides = Object.entries(data.simulatedOverrides).map(([k, v]) => ({ 'Course ID': k, 'Simulated Grade': v }));
+          XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(overrides), 'Simulations');
+        }
+
+        if (data.futureSemesters && data.futureSemesters.length > 0) {
+          const futureData = [];
+          data.futureSemesters.forEach(fs => {
+            (fs.courses || []).forEach(c => {
+              futureData.push({
+                'Semester Name': fs.name || '',
+                'Course ID': c.id || '',
+                'Credits': c.credits || '',
+                'Expected Grade': c.expectedGrade || ''
+              });
+            });
+          });
+          if (futureData.length) XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(futureData), 'Future Plans');
+        }
+
+        if (data.scenarios && data.scenarios.length > 0) {
+          const scData = data.scenarios.map(sc => ({
+            'Scenario Name': sc.name || '',
+            'Original CGPA': sc.originalCGPA || '',
+            'Simulated CGPA': sc.simulatedCGPA || '',
+            'Projected CGPA': sc.projectedCGPA || ''
+          }));
+          XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(scData), 'Scenarios');
+        }
+
+        XLSX.writeFile(wb, 'GradePilot_Report.xlsx');
+        AU_NOTIFICATIONS.show('Excel Report downloaded!', 'success');
+      } catch (err) {
+        console.error(err);
+        AU_NOTIFICATIONS.show('Failed to generate Excel file.', 'error');
+      }
     });
 
     const importInp = id('au-import');

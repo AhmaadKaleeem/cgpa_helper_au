@@ -24,6 +24,10 @@ Plan your remaining semesters by setting a target CGPA and seeing the grades req
 
 Simulate course retakes and identify which subjects will have the greatest impact on improving your CGPA.
 
+### Excel Reports & Backup
+
+Generate beautiful, multi-sheet Excel (`.xlsx`) reports containing your full transcript, simulated grades, and future plans with a single click. Keep your data safe with JSON import/export functionality.
+
 ### Privacy First
 
 Your academic data never leaves your computer. GradePilot performs all calculations locally inside your browser.
@@ -32,56 +36,44 @@ Your academic data never leaves your computer. GradePilot performs all calculati
 
 # Installation
 
-GradePilot can be installed using one of the following methods.
+Here are all 4 ways you can download and install the extension:
 
-## Option 1: WinGet (Recommended)
+## Option A: WinGet (Recommended)
 
-Install GradePilot directly from the Windows Package Manager:
-
+Open Command Prompt or PowerShell and type:
 ```bash
 winget install AhmadKaleemBhatti.GradePilot
 ```
 
-Note: The package may take some time to appear after a new release or initial publication due to WinGet repository synchronization.
-
 ---
 
-## Option 2: Windows Installer
+## Option B: Windows Installer (.exe)
 
-You can download the installer manually:
+Users can download `GradePilotSetup.exe` from our GitHub Releases page, which automatically installs the extension files and opens Chrome for them.
 * **Direct Download**: [GradePilotSetup.exe (v1.0.0)](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilotSetup.exe)
-* **Release Page**: [View all v1.0.0 downloads](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/tag/v1.0.0)
-
-Run the installer once downloaded. It will:
-
-* Install GradePilot to your computer
-* Create Desktop and Start Menu shortcuts (optional)
-* Guide you through loading the extension in Chrome
-* Configure everything required for first-time setup
+* **Releases Page**: [GitHub Releases](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases)
+* **Manual Setup Guide**: [View User Manual](extension/USER_MANUAL.md)
 
 ---
 
-## Option 3: Install from ZIP (Advanced)
+## Option C: ZIP File (Advanced)
 
-1. Download the ZIP file using one of these options:
-   * **Direct Download**: [GradePilot-v1.0.0.zip](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilot-v1.0.0.zip)
-   * **Release Page**: [View all v1.0.0 downloads](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/tag/v1.0.0)
-2. Extract the archive.
-3. Open Chrome.
-4. Navigate to `chrome://extensions`.
-5. Enable **Developer Mode**.
-6. Click **Load unpacked**.
-7. Select the extracted GradePilot folder.
+Users can download the `GradePilot-v1.0.0.zip` from our GitHub Releases, extract it anywhere on their computer, and load the folder in Chrome via Developer Mode.
+* **Direct Download**: [GradePilot-v1.0.0.zip](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilot-v1.0.0.zip)
+* **Releases Page**: [GitHub Releases](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases)
+* **Manual Setup Guide**: [View User Manual](extension/USER_MANUAL.md)
 
 ---
 
-## Option 4: Build from Source
+## Option D: Build from Source (For Developers)
 
+Developers can run:
 ```bash
 git clone https://github.com/AhmaadKaleeem/cgpa_helper_au.git
 ```
-
-Open Chrome, enable Developer Mode, and load the `extension` folder as an unpacked extension.
+and load the `extension` folder manually into Chrome's Developer Mode.
+* **Releases Page**: [GitHub Releases](https://github.com/AhmaadKaleeem/cgpa_helper_au/releases)
+* **Manual Setup Guide**: [View User Manual](extension/USER_MANUAL.md)
 
 ---
 
