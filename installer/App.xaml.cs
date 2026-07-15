@@ -60,8 +60,43 @@ namespace GradePilotInstaller
         {
             await _host.StartAsync();
 
-            var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-            mainWindow.Show();
+            // Check for silent installation mode
+            bool silentMode = e.Args.Contains("/silent") || e.Args.Contains("--silent") || e.Args.Contains("-silent");
+            
+            if (silentMode)
+            {
+                // Run silent installation
+                var pathService = _host.Services.GetRequiredService<IPathService>();
+                var coordinator = _host.Services.GetRequiredService<IInstallerCoordinator>();
+                
+                // Use default installation path
+                var progress = new Progress<Models.InstallerProgressReport>(report => { });
+                var result = await coordinator.RunInstallationAsync(progress);
+                
+                if (result.Success)
+                {
+                    // Register uninstall info
+                    using var key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\GradePilot");
+                    if (key != null)
+                    {
+                        key.SetValue("DisplayName", "GradePilot");
+                        key.SetValue("DisplayVersion", "1.0.0");
+                        key.SetValue("Publisher", "Ahmad Kaleem");
+                        key.SetValue("InstallLocation", pathService.InstallRoot);
+                    }
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    Environment.Exit(1);
+                }
+            }
+            else
+            {
+                // Run interactive mode
+                var mainWindow = _host.Services.GetRequiredService<MainWindow>();
+                mainWindow.Show();
+            }
 
             base.OnStartup(e);
         }

@@ -3,12 +3,15 @@ PackageVersion: 1.0.0
 Platform:
 - Windows.Desktop
 MinimumOSVersion: 10.0.17763.0
-InstallerType: inno
+InstallerType: exe
 InstallMode: interactive
 UpgradeBehavior: install
+InstallerSwitches:
+  Silent: /silent
+  SilentWithProgress: /silent
 Installers:
 - Architecture: x64
   InstallerUrl: https://github.com/AhmaadKaleeem/cgpa_helper_au/releases/download/v1.0.0/GradePilotSetup.exe
-  InstallerSha256: 0000000000000000000000000000000000000000000000000000000000000000 # Placeholder
+  InstallerSha256: C48D289EDC697A673187CF2502135D5764A52A52DE4B42B2E457ED9B0228FE15
 ManifestType: installer
-ManifestVersion: 1.6.0
+ManifestVersion: 1.12.0
