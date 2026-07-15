@@ -26,6 +26,7 @@
   <ItemGroup>
     <Content Include="Legal\**" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Assets\**" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets\extension.zip" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="installer-manifest.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 

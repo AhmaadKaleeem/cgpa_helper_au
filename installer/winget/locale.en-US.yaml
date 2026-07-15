@@ -12,4 +12,4 @@ ShortDescription: Calculates true academic standing and applies retake rules for
 Description: GradePilot is a completely local browser extension that integrates with the Air University student portal to accurately calculate Semester and Cumulative GPAs, handle complex retake logic, and help simulate future academic performance.
 InstallationNotes: This package installs the local GradePilot extraction wizard. After the wizard completes, Chrome will automatically launch so you can load the extension manually via Developer Mode.
 ManifestType: defaultLocale
-ManifestVersion: 1.6.0
+ManifestVersion: 1.12.0
