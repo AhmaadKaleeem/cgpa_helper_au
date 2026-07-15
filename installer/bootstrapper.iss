@@ -25,4 +25,5 @@ SolidCompression=yes
 Source: "bin\Release\net8.0-windows\win-x64\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Run]
-Filename: "{app}\GradePilotInstaller.exe"; Flags: waituntilterminated
+Filename: "{app}\GradePilotInstaller.exe"; Parameters: "/silent"; Flags: waituntilterminated; Check: WizardSilent
+Filename: "{app}\GradePilotInstaller.exe"; Flags: waituntilterminated; Check: not WizardSilent
