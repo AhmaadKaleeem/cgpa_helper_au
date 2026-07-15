@@ -131,7 +131,29 @@ You can simulate multiple courses at the same time. Changes are temporary and do
 
 ---
 
-## 6. Settings
+## 6. Understanding Your GPA (Common Student Concerns)
+
+Air University's grading rules can sometimes be confusing when looking at the official portal. GradePilot automatically handles these edge cases for you. Here is how they work:
+
+### Retake Policy & Credit Replacement
+When you retake a course and achieve a higher grade, Air University policy replaces the old grade in your **CGPA** calculation. 
+- The original credits are *excluded* from your total CGPA credits, preventing the bad grade from dragging you down.
+- **Note:** Your historical **SGPA** for that old semester will *not* change. The old grade stays on your transcript for that specific semester, but it is effectively erased from your overall CGPA.
+
+### Failing Grades (F / XF)
+If you fail a course, you earn **0 degree credits** toward your graduation progress. However, the credit hours *are* still included in your GPA calculations (granting 0 quality points), which heavily impacts your CGPA. GradePilot correctly mirrors this behavior.
+
+### Foundation & Non-Credit Courses (S / U Grades)
+Certain courses (like Pre-Calculus) are graded as **Satisfactory (S)** or **Unsatisfactory (U)**. These courses grant **0 quality points** and their credit hours are completely excluded from both your SGPA and CGPA. They also do not count toward your earned degree progress. GradePilot automatically detects and excludes these.
+
+### Portal Error Corrections
+Sometimes the AU Student Portal makes administrative mistakes—such as counting a formally dropped course as an 'F'. 
+- You can manually override this in the **Overview**, **Simulate**, or **Plan** tabs under **Portal Error Corrections**. 
+- Restoring a course here forces the GradePilot optimizer to completely ignore it in all calculations, revealing your *true* CGPA.
+
+---
+
+## 7. Settings
 
 Click the gear icon to open settings.
 
@@ -146,7 +168,7 @@ Click the gear icon to open settings.
 
 ---
 
-## 7. Uninstallation
+## 8. Uninstallation
 
 Since GradePilot is an unpacked extension, you can easily remove it without a dedicated uninstaller program:
 1. Open Chrome and go to `chrome://extensions`.
@@ -156,7 +178,7 @@ Since GradePilot is an unpacked extension, you can easily remove it without a de
 
 ---
 
-## 8. Troubleshooting
+## 9. Troubleshooting
 
 **The CGPA button does not appear.**  
 Make sure you are on the Grade Report page, not the portal homepage or another section. Reload the page and try again.
